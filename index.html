@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARPorto - Portofolio Pribadi</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0f172a',
+                            card: '#1e293b',
+                            accent: '#38bdf8',
+                            primary: '#818cf8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            scroll-behavior: smooth;
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-glow {
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+            transition: all 0.3s ease;
+        }
+        .profile-glow:hover {
+            box-shadow: 0 0 30px rgba(129, 140, 248, 0.8);
+            transform: scale(1.02);
+        }
+
+        .section-page { display: none; }
+        .section-page.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Filter Tabs */
+        .filter-btn.active {
+            background-color: #38bdf8;
+            color: white;
+            border-color: #38bdf8;
+        }
+
+        /* Modal custom */
+        .modal-overlay {
+            background-color: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(5px);
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="glass-nav fixed w-full z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0 cursor-pointer text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-accent to-brand-primary" onclick="navigate('home')">
+                    ARPorto.
+                </div>
+                
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <button onclick="navigate('home')" class="hover:text-brand-accent transition-colors px-3 py-2 rounded-md text-sm font-medium">Dashboard</button>
+                        <button onclick="navigate('portfolio')" class="hover:text-brand-accent transition-colors px-3 py-2 rounded-md text-sm font-medium">Karya & Prestasi</button>
+                        <button onclick="requestEditAccess()" class="hover:text-brand-accent transition-colors px-3 py-2 rounded-md text-sm font-medium">Manajemen Data</button>
+                        <button onclick="navigate('contact')" class="bg-brand-primary hover:bg-indigo-500 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-lg hover:shadow-indigo-500/50">Contact Me</button>
+                    </div>
+                </div>
+
+                <div class="-mr-2 flex md:hidden">
+                    <button id="mobile-menu-btn" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-brand-card focus:outline-none transition-colors">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-card border-b border-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <button onclick="navigate('home'); toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">Dashboard</button>
+                <button onclick="navigate('portfolio'); toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">Karya & Prestasi</button>
+                <button onclick="requestEditAccess(); toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">Manajemen Data</button>
+                <button onclick="navigate('contact'); toggleMobileMenu();" class="text-left w-full bg-brand-primary text-white block px-3 py-2 rounded-md text-base font-medium mt-4">Contact Me</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Password Modal -->
+    <div id="password-modal" class="fixed inset-0 z-[60] hidden modal-overlay flex items-center justify-center p-4">
+        <div class="bg-brand-card p-8 rounded-2xl border border-gray-700 w-full max-w-sm shadow-2xl relative">
+            <button onclick="closePasswordModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+            <h3 class="text-xl font-bold mb-4 text-center">Akses Terkunci</h3>
+            <p class="text-sm text-gray-400 mb-6 text-center">Masukkan password untuk masuk ke Manajemen Data.</p>
+            <input type="password" id="auth-password" class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent mb-2" placeholder="Password...">
+            <p id="auth-error" class="text-red-400 text-xs hidden mb-4">Password salah!</p>
+            <button onclick="verifyPassword()" class="w-full bg-brand-primary hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-lg transition-colors mt-2">Masuk</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        
+        <!-- SECTION 1: DASHBOARD UTAMA -->
+        <section id="home" class="section-page active">
+            <div class="flex flex-col md:flex-row items-center justify-between mt-10 lg:mt-20 gap-12">
+                <div class="w-full md:w-3/5 space-y-6">
+                    <!-- EDIT BAGIAN INI SECARA MANUAL NANTI -->
+                    <p class="text-brand-accent font-medium tracking-wide fade-in-up uppercase text-sm">Strategic Thinker | Data Analyst</p>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight fade-in-up delay-100">
+                        Mengubah <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-primary">Intuisi</span> Menjadi Presisi.
+                    </h1>
+                    <p class="text-gray-400 text-lg md:text-xl leading-relaxed fade-in-up delay-200">
+                        Saya menggabungkan kedalaman analisis psikologis dengan akurasi data kuantitatif. Berpengalaman dalam riset MPI, analisis algoritma trading, hingga harmonisasi teknologi dan musik.
+                    </p>
+                    <div class="pt-4 flex gap-4 fade-in-up delay-300">
+                        <button onclick="navigate('portfolio')" class="bg-gradient-to-r from-brand-accent to-brand-primary text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-brand-primary/30">
+                            Lihat Portofolio
+                        </button>
+                        <button onclick="navigate('contact')" class="border border-brand-accent text-brand-accent px-8 py-3 rounded-full font-semibold hover:bg-brand-accent hover:text-white transition-all">
+                            Hire Me
+                        </button>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-2/5 flex justify-center fade-in-up delay-200">
+                    <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-full p-2 bg-gradient-to-tr from-brand-primary to-brand-accent profile-glow">
+                        <!-- EDIT FOTO PROFIL DI SINI (Ubah atribut src="...") -->
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" 
+                             alt="Foto Profil Ahmad Rijani" 
+                             class="w-full h-full object-cover rounded-full border-4 border-brand-dark">
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 fade-in-up delay-300">
+                <div class="bg-brand-card p-6 rounded-2xl text-center border border-gray-800 hover:border-brand-primary transition-colors">
+                    <i class="fas fa-brain text-3xl text-brand-accent mb-3"></i>
+                    <h3 class="font-bold text-xl">Psikologi</h3>
+                    <p class="text-gray-400 text-sm mt-1">Analisis Perilaku</p>
+                </div>
+                <div class="bg-brand-card p-6 rounded-2xl text-center border border-gray-800 hover:border-brand-primary transition-colors">
+                    <i class="fas fa-chart-line text-3xl text-brand-primary mb-3"></i>
+                    <h3 class="font-bold text-xl">Trading</h3>
+                    <p class="text-gray-400 text-sm mt-1">Kuantitatif & Makro</p>
+                </div>
+                <div class="bg-brand-card p-6 rounded-2xl text-center border border-gray-800 hover:border-brand-primary transition-colors">
+                    <i class="fas fa-code text-3xl text-brand-accent mb-3"></i>
+                    <h3 class="font-bold text-xl">Teknologi</h3>
+                    <p class="text-gray-400 text-sm mt-1">Web & AI Prompting</p>
+                </div>
+                <div class="bg-brand-card p-6 rounded-2xl text-center border border-gray-800 hover:border-brand-primary transition-colors">
+                    <i class="fas fa-music text-3xl text-brand-primary mb-3"></i>
+                    <h3 class="font-bold text-xl">Musik</h3>
+                    <p class="text-gray-400 text-sm mt-1">Teori & Komposisi</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: PORTOFOLIO VIEW -->
+        <section id="portfolio" class="section-page">
+            <div class="text-center mb-10 mt-10">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Karya & <span class="text-brand-accent">Prestasi</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Eksplorasi jejak pencapaian, riset, dan pengembangan diri.</p>
+            </div>
+
+            <!-- Filter Kategori -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10" id="filter-container">
+                <button onclick="filterPortfolio('Semua')" class="filter-btn active border border-gray-600 px-4 py-2 rounded-full text-sm font-medium transition-colors hover:border-brand-accent">Semua</button>
+                <button onclick="filterPortfolio('Teknologi (Web & AI Prompting)')" class="filter-btn border border-gray-600 px-4 py-2 rounded-full text-sm font-medium transition-colors hover:border-brand-accent">Teknologi</button>
+                <button onclick="filterPortfolio('Prestasi Akademik')" class="filter-btn border border-gray-600 px-4 py-2 rounded-full text-sm font-medium transition-colors hover:border-brand-accent">Prestasi Akademik</button>
+                <button onclick="filterPortfolio('Prestasi Non Akademik')" class="filter-btn border border-gray-600 px-4 py-2 rounded-full text-sm font-medium transition-colors hover:border-brand-accent">Prestasi Non Akademik</button>
+                <button onclick="filterPortfolio('Sertifikat Kemahiran Profesional')" class="filter-btn border border-gray-600 px-4 py-2 rounded-full text-sm font-medium transition-colors hover:border-brand-accent">Sertifikat Profesional</button>
+                <button onclick="filterPortfolio('Design Grafis')" class="filter-btn border border-gray-600 px-4 py-2 rounded-full text-sm font-medium transition-colors hover:border-brand-accent">Design Grafis</button>
+            </div>
+            
+            <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Data akan dimuat disini oleh JavaScript -->
+            </div>
+        </section>
+
+        <!-- SECTION 3: MANAJEMEN DATA -->
+        <section id="edit" class="section-page">
+            <div class="max-w-4xl mx-auto mt-10">
+                
+                <!-- Form Area -->
+                <div class="bg-brand-card rounded-2xl p-8 border border-gray-700 shadow-2xl mb-10">
+                    <h2 class="text-2xl font-bold mb-6 border-b border-gray-700 pb-4 flex items-center gap-3">
+                        <i class="fas fa-edit text-brand-primary"></i> <span id="form-title">Tambah Portofolio Baru</span>
+                    </h2>
+                    
+                    <form id="add-portfolio-form" class="space-y-5">
+                        <input type="hidden" id="p-id">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Judul Proyek / Prestasi</label>
+                            <input type="text" id="p-title" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all">
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">Kategori</label>
+                                <select id="p-category" class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all">
+                                    <option value="Teknologi (Web & AI Prompting)">Teknologi (Web & AI Prompting)</option>
+                                    <option value="Prestasi Akademik">Prestasi Akademik</option>
+                                <option value="Prestasi Non Akademik">Prestasi Non Akademik</option>
+                                <option value="Sertifikat Kemahiran Profesional">Sertifikat Kemahiran Profesional</option>
+                                <option value="Design Grafis">Design Grafis</option>
+                            </select>
+                        </div>
+                        <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">Link G-Drive (Opsional)</label>
+                                <input type="url" id="p-link" class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all" placeholder="https://drive.google.com/...">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Deskripsi Singkat</label>
+                            <textarea id="p-desc" rows="4" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all"></textarea>
+                        </div>
+
+                        <div id="form-msg" class="hidden text-green-400 text-sm py-2"><i class="fas fa-check-circle"></i> Data berhasil disimpan!</div>
+
+                        <div class="flex gap-3">
+                            <button type="submit" id="btn-submit" class="flex-1 bg-brand-primary hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-lg">Simpan Data</button>
+                            <button type="button" onclick="cancelEdit()" id="btn-cancel" class="hidden bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 px-4 rounded-lg transition-colors">Batal</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- List / Table Data Area -->
+                <div class="bg-brand-card rounded-2xl p-8 border border-gray-700 shadow-2xl">
+                    <h3 class="text-xl font-bold mb-6 border-b border-gray-700 pb-4">Daftar Portofolio Saat Ini</h3>
+                    <div id="manage-list" class="space-y-4">
+                        <!-- Render list untuk edit/hapus -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: CONTACT PERSON -->
+        <section id="contact" class="section-page">
+            <div class="max-w-4xl mx-auto mt-10">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Mari <span class="text-brand-accent">Berdikusi</span></h2>
+                    <p class="text-gray-400">Tertarik untuk kolaborasi riset, analisis data, atau mempekerjakan saya? Hubungi via form di bawah.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div class="space-y-8">
+                        <div class="bg-brand-card p-6 rounded-2xl border border-gray-700 flex items-start gap-4">
+                            <div class="bg-brand-dark p-3 rounded-full text-brand-accent">
+                                <i class="fas fa-envelope text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold">Email</h4>
+                                <a href="mailto:ahmadrijani207@gmail.com" class="text-gray-400 hover:text-white transition-colors">ahmadrijani207@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="bg-brand-card p-6 rounded-2xl border border-gray-700 flex items-start gap-4">
+                            <div class="bg-brand-dark p-3 rounded-full text-brand-primary">
+                                <i class="fab fa-linkedin text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold">LinkedIn</h4>
+                                <a href="https://www.linkedin.com/in/ahmad-rijani-7543113b4?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="text-gray-400 hover:text-white transition-colors text-sm break-all">Ahmad Rijani (LinkedIn)</a>
+                            </div>
+                        </div>
+                        <div class="bg-brand-card p-6 rounded-2xl border border-gray-700 flex items-start gap-4">
+                            <div class="bg-brand-dark p-3 rounded-full text-green-400">
+                                <i class="fab fa-whatsapp text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold">WhatsApp</h4>
+                                <a href="https://wa.me/6282150658810" target="_blank" class="text-gray-400 hover:text-white transition-colors">082150658810</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-brand-card rounded-2xl p-8 border border-gray-700 shadow-xl">
+                        <form id="contact-form" class="space-y-4">
+                            <div><input type="text" id="contact-name" placeholder="Nama Anda" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent"></div>
+                            <div><input type="email" id="contact-email" placeholder="Email Anda" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent"></div>
+                            <div><textarea id="contact-message" rows="4" placeholder="Pesan atau tawaran..." required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent"></textarea></div>
+                            <p id="contact-msg" class="hidden text-green-400 text-sm">Membuka aplikasi email untuk mengirim...</p>
+                            <button type="submit" class="w-full bg-brand-accent hover:bg-sky-500 text-white font-bold py-3 px-4 rounded-lg transition-colors">Kirim Pesan</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-brand-card border-t border-gray-800 py-6 text-center text-sm text-gray-500 mt-auto">
+        <p>&copy; 2026 Ahmad Rijani. Profesional, Bertanggung Jawab, dan Amanah.</p>
+    </footer>
