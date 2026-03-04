@@ -96,18 +96,18 @@
         ::-webkit-scrollbar-thumb:hover { background: #475569; }
     </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col">
+<body class="antialiased min-h-screen flex flex-col overflow-x-hidden">
 
     <!-- Navigation -->
     <nav class="glass-nav fixed w-full z-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex-shrink-0 cursor-pointer text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-accent to-brand-primary" onclick="navigate('home')">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <div class="flex-shrink-0 cursor-pointer text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-accent to-brand-primary" onclick="navigate('home')">
                     ARPorto.
                 </div>
                 
                 <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8">
+                    <div class="ml-10 flex items-baseline space-x-6 lg:space-x-8">
                         <button onclick="navigate('home')" class="hover:text-brand-accent transition-colors px-3 py-2 rounded-md text-sm font-medium">Dashboard</button>
                         <button onclick="navigate('portfolio')" class="hover:text-brand-accent transition-colors px-3 py-2 rounded-md text-sm font-medium">Karya & Prestasi</button>
                         <button onclick="requestEditAccess()" class="hover:text-brand-accent transition-colors px-3 py-2 rounded-md text-sm font-medium">Manajemen Data</button>
@@ -116,167 +116,168 @@
                 </div>
 
                 <div class="-mr-2 flex md:hidden">
-                    <button id="mobile-menu-btn" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-brand-card focus:outline-none transition-colors">
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-brand-card focus:outline-none transition-colors">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-brand-card border-b border-gray-700">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <button onclick="navigate('home'); toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">Dashboard</button>
-                <button onclick="navigate('portfolio'); toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">Karya & Prestasi</button>
-                <button onclick="requestEditAccess(); toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">Manajemen Data</button>
-                <button onclick="navigate('contact'); toggleMobileMenu();" class="text-left w-full bg-brand-primary text-white block px-3 py-2 rounded-md text-base font-medium mt-4">Contact Me</button>
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-card border-b border-gray-700 absolute w-full left-0 top-full shadow-xl">
+            <div class="px-4 pt-2 pb-4 space-y-2">
+                <button onclick="navigate('home'); toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-3 rounded-md text-base font-medium transition-colors">Dashboard</button>
+                <button onclick="navigate('portfolio'); toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-3 rounded-md text-base font-medium transition-colors">Karya & Prestasi</button>
+                <button onclick="requestEditAccess(); toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-3 rounded-md text-base font-medium transition-colors">Manajemen Data</button>
+                <button onclick="navigate('contact'); toggleMobileMenu();" class="text-center w-full bg-brand-primary text-white block px-3 py-3 rounded-md text-base font-medium mt-4 shadow-lg">Contact Me</button>
             </div>
         </div>
     </nav>
 
     <!-- Password Modal -->
     <div id="password-modal" class="fixed inset-0 z-[60] hidden modal-overlay flex items-center justify-center p-4">
-        <div class="bg-brand-card p-8 rounded-2xl border border-gray-700 w-full max-w-sm shadow-2xl relative">
-            <button onclick="closePasswordModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+        <div class="bg-brand-card p-6 sm:p-8 rounded-2xl border border-gray-700 w-full max-w-sm shadow-2xl relative">
+            <button onclick="closePasswordModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white p-2"><i class="fas fa-times"></i></button>
             <h3 class="text-xl font-bold mb-4 text-center">Akses Terkunci</h3>
             <p class="text-sm text-gray-400 mb-6 text-center">Masukkan password untuk masuk ke Manajemen Data.</p>
             <input type="password" id="auth-password" class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent mb-2" placeholder="Password...">
-            <p id="auth-error" class="text-red-400 text-xs hidden mb-4">Password salah!</p>
+            <p id="auth-error" class="text-red-400 text-xs hidden mb-4 text-center">Password salah!</p>
             <button onclick="verifyPassword()" class="w-full bg-brand-primary hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-lg transition-colors mt-2">Masuk</button>
         </div>
     </div>
 
     <!-- Main Content -->
-    <main class="flex-grow pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+    <main class="flex-grow pt-20 sm:pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         
         <!-- SECTION 1: DASHBOARD UTAMA -->
         <section id="home" class="section-page active">
-            <div class="flex flex-col md:flex-row items-center justify-between mt-10 lg:mt-20 gap-12">
-                <div class="w-full md:w-3/5 space-y-6">
-                    <p class="text-brand-accent font-medium tracking-wide fade-in-up uppercase text-sm">Strategic Thinker | Profesional</p>
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight fade-in-up delay-100">
+            <div class="flex flex-col-reverse md:flex-row items-center justify-between mt-8 sm:mt-10 lg:mt-20 gap-10 sm:gap-12">
+                <div class="w-full md:w-3/5 space-y-4 sm:space-y-6 text-center md:text-left">
+                    <p class="text-brand-accent font-medium tracking-wide fade-in-up uppercase text-xs sm:text-sm">Strategic Thinker | Profesional</p>
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight fade-in-up delay-100">
                         Mengubah <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-primary">Intuisi</span> Menjadi Presisi.
                     </h1>
-                    <p class="text-gray-400 text-lg md:text-xl leading-relaxed fade-in-up delay-200">
-                        Saya Ahmad Rijani Mahasiswa aktif Universitas Islam Negeri Antasari yang berdedikasi memberikan dan betanggung jawab dengan baik atas segal tugas yang diberikan
+                    <p class="text-gray-400 text-base sm:text-lg md:text-xl leading-relaxed fade-in-up delay-200">
+                        Saya Ahmad Rijani Mahasiswa aktif Universitas Islam Negeri Antasari yang berdedikasi memberikan dan betanggung jawab dengan baik atas segala tugas yang diberikan.
                     </p>
-                    <div class="pt-4 flex gap-4 fade-in-up delay-300">
-                        <button onclick="navigate('portfolio')" class="bg-gradient-to-r from-brand-accent to-brand-primary text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-brand-primary/30">
+                    <div class="pt-2 sm:pt-4 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start fade-in-up delay-300">
+                        <button onclick="navigate('portfolio')" class="w-full sm:w-auto bg-gradient-to-r from-brand-accent to-brand-primary text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-brand-primary/30">
                             Lihat Portofolio
                         </button>
-                        <button onclick="navigate('contact')" class="border border-brand-accent text-brand-accent px-8 py-3 rounded-full font-semibold hover:bg-brand-accent hover:text-white transition-all">
+                        <button onclick="navigate('contact')" class="w-full sm:w-auto border border-brand-accent text-brand-accent px-8 py-3 rounded-full font-semibold hover:bg-brand-accent hover:text-white transition-all">
                             Hire Me
                         </button>
                     </div>
                 </div>
 
                 <div class="w-full md:w-2/5 flex justify-center fade-in-up delay-200">
-                    <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-full p-2 bg-gradient-to-tr from-brand-primary to-brand-accent profile-glow">
+                    <div class="relative w-52 h-52 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full p-2 bg-gradient-to-tr from-brand-primary to-brand-accent profile-glow">
                         <!-- Panggil file foto lokal dari folder assets -->
                         <img id="profile-img" src="assets/pas-foto.jpg" 
                              alt="Foto Profil Ahmad Rijani" 
-                             class="w-full h-full object-cover rounded-full border-4 border-brand-dark">
+                             class="w-full h-full object-cover rounded-full border-4 border-brand-dark"
+                             onerror="this.src='https://ui-avatars.com/api/?name=Ahmad+Rijani&background=0D8ABC&color=fff&size=512'">
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 fade-in-up delay-300">
-                <div class="bg-brand-card p-6 rounded-2xl text-center border border-gray-800 hover:border-brand-primary transition-colors">
-                    <i class="fas fa-brain text-3xl text-brand-accent mb-3"></i>
-                    <h3 class="font-bold text-xl">Manajemen Proyek</h3>
-                    <p class="text-gray-400 text-sm mt-1">Minat 1</p>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-16 sm:mt-20 fade-in-up delay-300">
+                <div class="bg-brand-card p-5 sm:p-6 rounded-2xl text-center border border-gray-800 hover:border-brand-primary transition-colors">
+                    <i class="fas fa-brain text-2xl sm:text-3xl text-brand-accent mb-2 sm:mb-3"></i>
+                    <h3 class="font-bold text-base sm:text-xl">Manajemen Proyek</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm mt-1">Minat 1</p>
                 </div>
-                <div class="bg-brand-card p-6 rounded-2xl text-center border border-gray-800 hover:border-brand-primary transition-colors">
-                    <i class="fas fa-chart-line text-3xl text-brand-primary mb-3"></i>
-                    <h3 class="font-bold text-xl">Design Grafis</h3>
-                    <p class="text-gray-400 text-sm mt-1">Minat 2</p>
+                <div class="bg-brand-card p-5 sm:p-6 rounded-2xl text-center border border-gray-800 hover:border-brand-primary transition-colors">
+                    <i class="fas fa-chart-line text-2xl sm:text-3xl text-brand-primary mb-2 sm:mb-3"></i>
+                    <h3 class="font-bold text-base sm:text-xl">Design Grafis</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm mt-1">Minat 2</p>
                 </div>
-                <div class="bg-brand-card p-6 rounded-2xl text-center border border-gray-800 hover:border-brand-primary transition-colors">
-                    <i class="fas fa-code text-3xl text-brand-accent mb-3"></i>
-                    <h3 class="font-bold text-xl">Web & AI Prompting</h3>
-                    <p class="text-gray-400 text-sm mt-1">Minat 3</p>
+                <div class="bg-brand-card p-5 sm:p-6 rounded-2xl text-center border border-gray-800 hover:border-brand-primary transition-colors">
+                    <i class="fas fa-code text-2xl sm:text-3xl text-brand-accent mb-2 sm:mb-3"></i>
+                    <h3 class="font-bold text-base sm:text-xl">Web & AI Prompt</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm mt-1">Minat 3</p>
                 </div>
-                <div class="bg-brand-card p-6 rounded-2xl text-center border border-gray-800 hover:border-brand-primary transition-colors">
-                    <i class="fas fa-music text-3xl text-brand-primary mb-3"></i>
-                    <h3 class="font-bold text-xl">Musik</h3>
-                    <p class="text-gray-400 text-sm mt-1">Minat 4</p>
+                <div class="bg-brand-card p-5 sm:p-6 rounded-2xl text-center border border-gray-800 hover:border-brand-primary transition-colors">
+                    <i class="fas fa-music text-2xl sm:text-3xl text-brand-primary mb-2 sm:mb-3"></i>
+                    <h3 class="font-bold text-base sm:text-xl">Musik</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm mt-1">Minat 4</p>
                 </div>
             </div>
         </section>
 
         <!-- SECTION 2: PORTOFOLIO VIEW -->
         <section id="portfolio" class="section-page">
-            <div class="text-center mb-10 mt-10">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Karya & <span class="text-brand-accent">Prestasi</span></h2>
-                <p class="text-gray-400 max-w-2xl mx-auto">Eksplorasi jejak pencapaian, riset, dan pengembangan diri.</p>
+            <div class="text-center mb-8 sm:mb-10 mt-6 sm:mt-10">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Karya & <span class="text-brand-accent">Prestasi</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base">Eksplorasi jejak pencapaian, riset, dan pengembangan diri.</p>
             </div>
 
             <!-- Filter Kategori -->
-            <div class="flex flex-wrap justify-center gap-3 mb-10" id="filter-container">
-                <button onclick="filterPortfolio('Semua')" class="filter-btn active border border-gray-600 px-4 py-2 rounded-full text-sm font-medium transition-colors hover:border-brand-accent">Semua</button>
-                <button onclick="filterPortfolio('Teknologi (Web & AI Prompting)')" class="filter-btn border border-gray-600 px-4 py-2 rounded-full text-sm font-medium transition-colors hover:border-brand-accent">Teknologi</button>
-                <button onclick="filterPortfolio('Prestasi Akademik')" class="filter-btn border border-gray-600 px-4 py-2 rounded-full text-sm font-medium transition-colors hover:border-brand-accent">Prestasi Akademik</button>
-                <button onclick="filterPortfolio('Prestasi Non Akademik')" class="filter-btn border border-gray-600 px-4 py-2 rounded-full text-sm font-medium transition-colors hover:border-brand-accent">Prestasi Non Akademik</button>
-                <button onclick="filterPortfolio('Sertifikat Kemahiran Profesional')" class="filter-btn border border-gray-600 px-4 py-2 rounded-full text-sm font-medium transition-colors hover:border-brand-accent">Sertifikat Profesional</button>
-                <button onclick="filterPortfolio('Design Grafis')" class="filter-btn border border-gray-600 px-4 py-2 rounded-full text-sm font-medium transition-colors hover:border-brand-accent">Design Grafis</button>
+            <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-10" id="filter-container">
+                <button onclick="filterPortfolio('Semua')" class="filter-btn active border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Semua</button>
+                <button onclick="filterPortfolio('Teknologi (Web & AI Prompting)')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Teknologi</button>
+                <button onclick="filterPortfolio('Prestasi Akademik')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Akademik</button>
+                <button onclick="filterPortfolio('Prestasi Non Akademik')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Non Akademik</button>
+                <button onclick="filterPortfolio('Sertifikat Kemahiran Profesional')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Sertifikat</button>
+                <button onclick="filterPortfolio('Design Grafis')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Grafis</button>
             </div>
             
-            <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div id="portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                 <!-- Data akan dimuat disini oleh JavaScript -->
             </div>
         </section>
 
         <!-- SECTION 3: MANAJEMEN DATA -->
         <section id="edit" class="section-page">
-            <div class="max-w-4xl mx-auto mt-10">
+            <div class="max-w-4xl mx-auto mt-6 sm:mt-10">
                 
                 <!-- Form Area -->
-                <div class="bg-brand-card rounded-2xl p-8 border border-gray-700 shadow-2xl mb-10">
-                    <h2 class="text-2xl font-bold mb-6 border-b border-gray-700 pb-4 flex items-center gap-3">
+                <div class="bg-brand-card rounded-2xl p-5 sm:p-8 border border-gray-700 shadow-2xl mb-8 sm:mb-10">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4 flex items-center gap-3">
                         <i class="fas fa-edit text-brand-primary"></i> <span id="form-title">Tambah Portofolio Baru</span>
                     </h2>
                     
-                    <form id="add-portfolio-form" class="space-y-5">
+                    <form id="add-portfolio-form" class="space-y-4 sm:space-y-5">
                         <input type="hidden" id="p-id">
                         <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-1">Judul Proyek / Prestasi</label>
-                            <input type="text" id="p-title" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all">
+                            <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Judul Proyek / Prestasi</label>
+                            <input type="text" id="p-title" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all">
                         </div>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
                             <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-1">Kategori</label>
-                                <select id="p-category" class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all">
+                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Kategori</label>
+                                <select id="p-category" class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all">
                                     <option value="Teknologi (Web & AI Prompting)">Teknologi (Web & AI Prompting)</option>
                                     <option value="Prestasi Akademik">Prestasi Akademik</option>
-                                <option value="Prestasi Non Akademik">Prestasi Non Akademik</option>
-                                <option value="Sertifikat Kemahiran Profesional">Sertifikat Kemahiran Profesional</option>
-                                <option value="Design Grafis">Design Grafis</option>
-                            </select>
-                        </div>
-                        <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-1">Link G-Drive (Opsional)</label>
-                                <input type="url" id="p-link" class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all" placeholder="https://drive.google.com/...">
+                                    <option value="Prestasi Non Akademik">Prestasi Non Akademik</option>
+                                    <option value="Sertifikat Kemahiran Profesional">Sertifikat Kemahiran Profesional</option>
+                                    <option value="Design Grafis">Design Grafis</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Link G-Drive (Opsional)</label>
+                                <input type="url" id="p-link" class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all" placeholder="https://drive.google.com/...">
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-1">Deskripsi Singkat</label>
-                            <textarea id="p-desc" rows="4" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all"></textarea>
+                            <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Deskripsi Singkat</label>
+                            <textarea id="p-desc" rows="4" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all"></textarea>
                         </div>
 
-                        <div id="form-msg" class="hidden text-green-400 text-sm py-2"><i class="fas fa-check-circle"></i> Data berhasil disimpan!</div>
+                        <div id="form-msg" class="hidden text-green-400 text-xs sm:text-sm py-2"><i class="fas fa-check-circle"></i> Data berhasil disimpan!</div>
 
-                        <div class="flex gap-3">
-                            <button type="submit" id="btn-submit" class="flex-1 bg-brand-primary hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-lg">Simpan Data</button>
-                            <button type="button" onclick="cancelEdit()" id="btn-cancel" class="hidden bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 px-4 rounded-lg transition-colors">Batal</button>
+                        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                            <button type="submit" id="btn-submit" class="w-full sm:flex-1 bg-brand-primary hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-lg text-sm sm:text-base">Simpan Data</button>
+                            <button type="button" onclick="cancelEdit()" id="btn-cancel" class="hidden w-full sm:w-auto bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 px-6 rounded-lg transition-colors text-sm sm:text-base">Batal</button>
                         </div>
                     </form>
                 </div>
 
                 <!-- List / Table Data Area -->
-                <div class="bg-brand-card rounded-2xl p-8 border border-gray-700 shadow-2xl">
-                    <h3 class="text-xl font-bold mb-6 border-b border-gray-700 pb-4">Daftar Portofolio Saat Ini</h3>
-                    <div id="manage-list" class="space-y-4">
+                <div class="bg-brand-card rounded-2xl p-5 sm:p-8 border border-gray-700 shadow-2xl">
+                    <h3 class="text-lg sm:text-xl font-bold mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">Daftar Portofolio Saat Ini</h3>
+                    <div id="manage-list" class="space-y-3 sm:space-y-4">
                         <!-- Render list untuk edit/hapus -->
                     </div>
                 </div>
@@ -285,50 +286,50 @@
 
         <!-- SECTION 4: CONTACT PERSON -->
         <section id="contact" class="section-page">
-            <div class="max-w-4xl mx-auto mt-10">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Mari <span class="text-brand-accent">Berdikusi</span></h2>
-                    <p class="text-gray-400">Tertarik untuk kolaborasi riset, analisis data, atau mempekerjakan saya? Hubungi via form di bawah.</p>
+            <div class="max-w-4xl mx-auto mt-6 sm:mt-10">
+                <div class="text-center mb-8 sm:mb-12">
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Mari <span class="text-brand-accent">Berdikusi</span></h2>
+                    <p class="text-gray-400 text-sm sm:text-base px-2">Tertarik untuk kolaborasi riset, analisis data, atau mempekerjakan saya? Hubungi via form di bawah.</p>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-12">
-                    <div class="space-y-8">
-                        <div class="bg-brand-card p-6 rounded-2xl border border-gray-700 flex items-start gap-4">
-                            <div class="bg-brand-dark p-3 rounded-full text-brand-accent">
-                                <i class="fas fa-envelope text-xl"></i>
+                <div class="grid md:grid-cols-2 gap-8 sm:gap-12">
+                    <div class="space-y-4 sm:space-y-6">
+                        <div class="bg-brand-card p-4 sm:p-6 rounded-2xl border border-gray-700 flex items-start gap-4 hover:border-brand-accent transition-colors">
+                            <div class="bg-brand-dark p-3 rounded-full text-brand-accent shrink-0">
+                                <i class="fas fa-envelope text-lg sm:text-xl"></i>
                             </div>
-                            <div>
-                                <h4 class="text-lg font-semibold">Email</h4>
-                                <a href="mailto:ahmadrijani207@gmail.com" class="text-gray-400 hover:text-white transition-colors">ahmadrijani207@gmail.com</a>
-                            </div>
-                        </div>
-                        <div class="bg-brand-card p-6 rounded-2xl border border-gray-700 flex items-start gap-4">
-                            <div class="bg-brand-dark p-3 rounded-full text-brand-primary">
-                                <i class="fab fa-linkedin text-xl"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-lg font-semibold">LinkedIn</h4>
-                                <a href="https://www.linkedin.com/in/ahmad-rijani-7543113b4?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="text-gray-400 hover:text-white transition-colors text-sm break-all">Ahmad Rijani (LinkedIn)</a>
+                            <div class="overflow-hidden">
+                                <h4 class="text-base sm:text-lg font-semibold">Email</h4>
+                                <a href="mailto:ahmadrijani207@gmail.com" class="text-gray-400 hover:text-white transition-colors text-xs sm:text-sm truncate block">ahmadrijani207@gmail.com</a>
                             </div>
                         </div>
-                        <div class="bg-brand-card p-6 rounded-2xl border border-gray-700 flex items-start gap-4">
-                            <div class="bg-brand-dark p-3 rounded-full text-green-400">
-                                <i class="fab fa-whatsapp text-xl"></i>
+                        <div class="bg-brand-card p-4 sm:p-6 rounded-2xl border border-gray-700 flex items-start gap-4 hover:border-brand-primary transition-colors">
+                            <div class="bg-brand-dark p-3 rounded-full text-brand-primary shrink-0">
+                                <i class="fab fa-linkedin text-lg sm:text-xl"></i>
+                            </div>
+                            <div class="overflow-hidden">
+                                <h4 class="text-base sm:text-lg font-semibold">LinkedIn</h4>
+                                <a href="https://www.linkedin.com/in/ahmad-rijani-7543113b4" target="_blank" class="text-gray-400 hover:text-white transition-colors text-xs sm:text-sm truncate block">Ahmad Rijani</a>
+                            </div>
+                        </div>
+                        <div class="bg-brand-card p-4 sm:p-6 rounded-2xl border border-gray-700 flex items-start gap-4 hover:border-green-400 transition-colors">
+                            <div class="bg-brand-dark p-3 rounded-full text-green-400 shrink-0">
+                                <i class="fab fa-whatsapp text-lg sm:text-xl"></i>
                             </div>
                             <div>
-                                <h4 class="text-lg font-semibold">WhatsApp</h4>
-                                <a href="https://wa.me/6282150658810" target="_blank" class="text-gray-400 hover:text-white transition-colors">082150658810</a>
+                                <h4 class="text-base sm:text-lg font-semibold">WhatsApp</h4>
+                                <a href="https://wa.me/6282150658810" target="_blank" class="text-gray-400 hover:text-white transition-colors text-xs sm:text-sm">082150658810</a>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-brand-card rounded-2xl p-8 border border-gray-700 shadow-xl">
+                    <div class="bg-brand-card rounded-2xl p-5 sm:p-8 border border-gray-700 shadow-xl">
                         <form id="contact-form" class="space-y-4">
-                            <div><input type="text" id="contact-name" placeholder="Nama Anda" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent"></div>
-                            <div><input type="email" id="contact-email" placeholder="Email Anda" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent"></div>
-                            <div><textarea id="contact-message" rows="4" placeholder="Pesan atau tawaran..." required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent"></textarea></div>
-                            <p id="contact-msg" class="hidden text-green-400 text-sm">Membuka aplikasi email untuk mengirim...</p>
-                            <button type="submit" class="w-full bg-brand-accent hover:bg-sky-500 text-white font-bold py-3 px-4 rounded-lg transition-colors">Kirim Pesan</button>
+                            <div><input type="text" id="contact-name" placeholder="Nama Anda" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-sm sm:text-base text-white focus:outline-none focus:border-brand-accent"></div>
+                            <div><input type="email" id="contact-email" placeholder="Email Anda" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-sm sm:text-base text-white focus:outline-none focus:border-brand-accent"></div>
+                            <div><textarea id="contact-message" rows="4" placeholder="Pesan atau tawaran..." required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-sm sm:text-base text-white focus:outline-none focus:border-brand-accent"></textarea></div>
+                            <p id="contact-msg" class="hidden text-green-400 text-xs sm:text-sm">Membuka aplikasi email untuk mengirim...</p>
+                            <button type="submit" class="w-full bg-brand-accent hover:bg-sky-500 text-white font-bold py-3 px-4 rounded-lg transition-colors text-sm sm:text-base">Kirim Pesan</button>
                         </form>
                     </div>
                 </div>
@@ -337,7 +338,7 @@
 
     </main>
 
-    <footer class="bg-brand-card border-t border-gray-800 py-6 text-center text-sm text-gray-500 mt-auto">
+    <footer class="bg-brand-card border-t border-gray-800 py-6 text-center text-xs sm:text-sm text-gray-500 mt-auto">
         <p>&copy; 2026 Ahmad Rijani. Profesional, Bertanggung Jawab, dan Amanah.</p>
     </footer>
 
@@ -461,7 +462,7 @@
                 : portfolios.filter(p => p.category === currentFilter);
 
             if(filtered.length === 0) {
-                grid.innerHTML = '<p class="text-gray-400 col-span-full text-center py-10">Belum ada karya di kategori ini.</p>';
+                grid.innerHTML = '<p class="text-gray-400 col-span-full text-center py-10 text-sm">Belum ada karya di kategori ini.</p>';
                 return;
             }
 
@@ -478,15 +479,15 @@
                     : '';
 
                 const card = `
-                    <div class="bg-brand-card rounded-2xl p-6 border border-gray-700 hover:border-brand-accent transition-all duration-300 hover:-translate-y-2 group shadow-lg flex flex-col h-full">
-                        <div class="w-12 h-12 bg-brand-dark rounded-xl flex items-center justify-center mb-4 group-hover:bg-brand-accent transition-colors">
-                            <i class="fas ${icon} text-xl text-brand-primary group-hover:text-white"></i>
+                    <div class="bg-brand-card rounded-2xl p-5 sm:p-6 border border-gray-700 hover:border-brand-accent transition-all duration-300 hover:-translate-y-2 group shadow-lg flex flex-col h-full">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-brand-dark rounded-xl flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-brand-accent transition-colors">
+                            <i class="fas ${icon} text-lg sm:text-xl text-brand-primary group-hover:text-white"></i>
                         </div>
-                        <span class="text-xs font-semibold px-2 py-1 bg-brand-dark text-brand-accent rounded-md mb-3 self-start">
+                        <span class="text-[10px] sm:text-xs font-semibold px-2 py-1 bg-brand-dark text-brand-accent rounded-md mb-2 sm:mb-3 self-start">
                             ${item.category}
                         </span>
-                        <h3 class="text-xl font-bold mb-2 text-white">${item.title}</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed flex-grow">
+                        <h3 class="text-lg sm:text-xl font-bold mb-2 text-white">${item.title}</h3>
+                        <p class="text-gray-400 text-xs sm:text-sm leading-relaxed flex-grow">
                             ${item.desc}
                         </p>
                         ${linkHtml}
@@ -502,20 +503,20 @@
             list.innerHTML = '';
 
             if (portfolios.length === 0) {
-                list.innerHTML = '<p class="text-gray-400 text-sm">Belum ada data.</p>';
+                list.innerHTML = '<p class="text-gray-400 text-sm text-center">Belum ada data.</p>';
                 return;
             }
 
             [...portfolios].reverse().forEach(item => {
                 list.innerHTML += `
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-brand-dark p-4 rounded-lg border border-gray-700 gap-4">
-                        <div>
-                            <h4 class="font-bold text-white">${item.title}</h4>
-                            <p class="text-xs text-brand-accent">${item.category}</p>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-brand-dark p-4 rounded-xl border border-gray-700 gap-3 sm:gap-4">
+                        <div class="w-full sm:w-auto">
+                            <h4 class="font-bold text-white text-sm sm:text-base">${item.title}</h4>
+                            <p class="text-[10px] sm:text-xs text-brand-accent mt-0.5">${item.category}</p>
                         </div>
-                        <div class="flex gap-2 w-full md:w-auto">
-                            <button onclick="editItem(${item.id})" class="flex-1 md:flex-none bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded text-sm transition-colors"><i class="fas fa-edit"></i> Edit</button>
-                            <button onclick="deleteItem(${item.id})" class="flex-1 md:flex-none bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded text-sm transition-colors"><i class="fas fa-trash"></i> Hapus</button>
+                        <div class="flex gap-2 w-full sm:w-auto mt-2 sm:mt-0">
+                            <button onclick="editItem(${item.id})" class="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded text-xs sm:text-sm transition-colors"><i class="fas fa-edit"></i> Edit</button>
+                            <button onclick="deleteItem(${item.id})" class="flex-1 sm:flex-none bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded text-xs sm:text-sm transition-colors"><i class="fas fa-trash"></i> Hapus</button>
                         </div>
                     </div>
                 `;
@@ -575,7 +576,7 @@
             document.getElementById('btn-submit').innerHTML = "Update Data";
             document.getElementById('btn-cancel').classList.remove('hidden');
 
-            window.scrollTo({ top: document.getElementById('edit').offsetTop - 100, behavior: 'smooth' });
+            window.scrollTo({ top: document.getElementById('edit').offsetTop - 80, behavior: 'smooth' });
         }
 
         function cancelEdit() {
