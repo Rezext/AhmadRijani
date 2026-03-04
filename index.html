@@ -152,13 +152,12 @@
         <section id="home" class="section-page active">
             <div class="flex flex-col md:flex-row items-center justify-between mt-10 lg:mt-20 gap-12">
                 <div class="w-full md:w-3/5 space-y-6">
-                    <!-- EDIT BAGIAN INI SECARA MANUAL NANTI -->
-                    <p class="text-brand-accent font-medium tracking-wide fade-in-up uppercase text-sm">Strategic Thinker | Profesional</p>
+                    <p class="text-brand-accent font-medium tracking-wide fade-in-up uppercase text-sm">Strategic Thinker | Data Analyst</p>
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight fade-in-up delay-100">
                         Mengubah <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-primary">Intuisi</span> Menjadi Presisi.
                     </h1>
                     <p class="text-gray-400 text-lg md:text-xl leading-relaxed fade-in-up delay-200">
-                        Saya Ahmad Rijani Mahasiswa aktif Universitas Islam Negeri Antasari yang berdedikasi akan memberikan dan bertanggunng jawab dengan baik atas segal tugas yang diberikan
+                        Saya menggabungkan kedalaman analisis psikologis dengan akurasi data kuantitatif. Berpengalaman dalam riset MPI, analisis algoritma trading, hingga harmonisasi teknologi dan musik.
                     </p>
                     <div class="pt-4 flex gap-4 fade-in-up delay-300">
                         <button onclick="navigate('portfolio')" class="bg-gradient-to-r from-brand-accent to-brand-primary text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-brand-primary/30">
@@ -172,9 +171,8 @@
 
                 <div class="w-full md:w-2/5 flex justify-center fade-in-up delay-200">
                     <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-full p-2 bg-gradient-to-tr from-brand-primary to-brand-accent profile-glow">
-                        <!-- EDIT FOTO PROFIL DI SINI (Ubah atribut src="...") -->
-                        <!-- Bisa langsung paste link Google Drive biasa di sini -->
-                        <img id="profile-img" src="https://drive.google.com/file/d/1UfCJMX11hhXuzawwHaduSlNfLQM-VbdZ/view?usp=drive_link" 
+                        <!-- Panggil file foto lokal dari folder assets -->
+                        <img id="profile-img" src="assets/pas-foto.jpg" 
                              alt="Foto Profil Ahmad Rijani" 
                              class="w-full h-full object-cover rounded-full border-4 border-brand-dark">
                     </div>
@@ -411,16 +409,6 @@
             this.reset();
         });
 
-        // Auto-Convert Google Drive Image Link untuk Foto Profil
-        window.addEventListener('DOMContentLoaded', () => {
-            const img = document.getElementById('profile-img');
-            const url = img.getAttribute('src');
-            if (url && url.includes('drive.google.com/file/d/')) {
-                const fileId = url.split('/file/d/')[1].split('/')[0];
-                img.src = `https://drive.google.com/uc?export=view&id=${fileId}`;
-            }
-        });
-
         // 2. Auth Logic (Manajemen Data)
         function requestEditAccess() {
             if (isAuthenticated) {
@@ -566,7 +554,6 @@
         });
 
         function deleteItem(id) {
-            // Kita bikin modal custom gantiin alert bawaan browser
             if(confirm("Yakin mau hapus data ini?")) {
                 portfolios = portfolios.filter(p => p.id !== id);
                 renderManageList();
@@ -588,7 +575,6 @@
             document.getElementById('btn-submit').innerHTML = "Update Data";
             document.getElementById('btn-cancel').classList.remove('hidden');
 
-            // Scroll up to form
             window.scrollTo({ top: document.getElementById('edit').offsetTop - 100, behavior: 'smooth' });
         }
 
