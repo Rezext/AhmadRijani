@@ -409,6 +409,16 @@
             this.reset();
         });
 
+         // Auto-Convert Google Drive Image Link untuk Foto Profil
+        window.addEventListener('DOMContentLoaded', () => {
+            const img = document.getElementById('profile-img');
+            const url = img.getAttribute('src');
+            if (url && url.includes('drive.google.com/file/d/')) {
+                const fileId = url.split('/file/d/')[1].split('/')[0];
+                img.src = `https://drive.google.com/uc?export=view&id=${fileId}`;
+            }
+        });
+
         // 2. Auth Logic (Manajemen Data)
         function requestEditAccess() {
             if (isAuthenticated) {
