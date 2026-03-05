@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARPorto - Portofolio Pribadi</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <script>
@@ -77,14 +74,12 @@
             to { opacity: 1; }
         }
 
-        /* Filter Tabs */
         .filter-btn.active {
             background-color: #38bdf8;
             color: white;
             border-color: #38bdf8;
         }
 
-        /* Modal custom */
         .modal-overlay {
             background-color: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(5px);
@@ -98,7 +93,6 @@
 </head>
 <body class="antialiased min-h-screen flex flex-col overflow-x-hidden">
 
-    <!-- Navigation -->
     <nav class="glass-nav fixed w-full z-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16 sm:h-20">
@@ -133,7 +127,6 @@
         </div>
     </nav>
 
-    <!-- Password Modal -->
     <div id="password-modal" class="fixed inset-0 z-[60] hidden modal-overlay flex items-center justify-center p-4">
         <div class="bg-brand-card p-6 sm:p-8 rounded-2xl border border-gray-700 w-full max-w-sm shadow-2xl relative">
             <button onclick="closePasswordModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white p-2"><i class="fas fa-times"></i></button>
@@ -145,7 +138,6 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <main class="flex-grow pt-20 sm:pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         
         <!-- SECTION 1: DASHBOARD UTAMA -->
@@ -171,7 +163,6 @@
 
                 <div class="w-full md:w-2/5 flex justify-center fade-in-up delay-200">
                     <div class="relative w-52 h-52 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full p-2 bg-gradient-to-tr from-brand-primary to-brand-accent profile-glow">
-                        <!-- Panggil file foto lokal dari folder assets -->
                         <img id="profile-img" src="assets/pas-foto.jpg" 
                              alt="Foto Profil Ahmad Rijani" 
                              class="w-full h-full object-cover rounded-full border-4 border-brand-dark"
@@ -210,8 +201,6 @@
                 <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Karya & <span class="text-brand-accent">Prestasi</span></h2>
                 <p class="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base">Eksplorasi jejak pencapaian, riset, dan pengembangan diri.</p>
             </div>
-
-            <!-- Filter Kategori -->
             <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-10" id="filter-container">
                 <button onclick="filterPortfolio('Semua')" class="filter-btn active border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Semua</button>
                 <button onclick="filterPortfolio('Teknologi (Web & AI Prompting)')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Teknologi</button>
@@ -222,7 +211,6 @@
             </div>
             
             <div id="portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                <!-- Data akan dimuat disini oleh JavaScript -->
             </div>
         </section>
 
@@ -230,7 +218,6 @@
         <section id="edit" class="section-page">
             <div class="max-w-4xl mx-auto mt-6 sm:mt-10">
                 
-                <!-- Form Area -->
                 <div class="bg-brand-card rounded-2xl p-5 sm:p-8 border border-gray-700 shadow-2xl mb-8 sm:mb-10">
                     <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4 flex items-center gap-3">
                         <i class="fas fa-edit text-brand-primary"></i> <span id="form-title">Tambah Portofolio Baru</span>
@@ -274,11 +261,9 @@
                     </form>
                 </div>
 
-                <!-- List / Table Data Area -->
                 <div class="bg-brand-card rounded-2xl p-5 sm:p-8 border border-gray-700 shadow-2xl">
                     <h3 class="text-lg sm:text-xl font-bold mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">Daftar Portofolio Saat Ini</h3>
                     <div id="manage-list" class="space-y-3 sm:space-y-4">
-                        <!-- Render list untuk edit/hapus -->
                     </div>
                 </div>
             </div>
@@ -342,9 +327,7 @@
         <p>&copy; 2026 Ahmad Rijani. Profesional, Bertanggung Jawab, dan Amanah.</p>
     </footer>
 
-    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Data Global
         let isAuthenticated = false;
         let currentFilter = 'Semua';
         
@@ -379,7 +362,6 @@
             }
         ];
 
-        // 1. Navigasi & UI
         function toggleMobileMenu() {
             document.getElementById('mobile-menu').classList.toggle('hidden');
         }
@@ -410,7 +392,6 @@
             this.reset();
         });
 
-        // 2. Auth Logic (Manajemen Data)
         function requestEditAccess() {
             if (isAuthenticated) {
                 navigate('edit');
@@ -437,11 +418,9 @@
             }
         }
 
-        // Filter Logic
         function filterPortfolio(category) {
             currentFilter = category;
             
-            // Ubah tampilan tombol aktif
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if(btn.innerText.includes(category.split(' ')[0]) || (category === 'Semua' && btn.innerText === 'Semua')) {
@@ -452,7 +431,6 @@
             renderPortfolio();
         }
 
-        // 3. Render Portofolio (Grid View)
         function renderPortfolio() {
             const grid = document.getElementById('portfolio-grid');
             grid.innerHTML = '';
@@ -466,7 +444,6 @@
                 return;
             }
 
-            // Copy array untuk reverse agar yg baru di atas
             [...filtered].reverse().forEach(item => {
                 let icon = 'fa-folder';
                 if(item.category.includes('Teknologi')) icon = 'fa-laptop-code';
@@ -496,8 +473,7 @@
                 grid.innerHTML += card;
             });
         }
-
-        // 4. Manajemen Data (CRUD)
+    
         function renderManageList() {
             const list = document.getElementById('manage-list');
             list.innerHTML = '';
@@ -523,7 +499,6 @@
             });
         }
 
-        // Handle Add & Edit Form Submit
         document.getElementById('add-portfolio-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -534,22 +509,19 @@
             const link = document.getElementById('p-link').value;
 
             if (idInput) {
-                // Update exist data
                 const index = portfolios.findIndex(p => p.id == idInput);
                 if(index !== -1) {
                     portfolios[index] = { id: parseInt(idInput), title, category, desc, link };
                 }
             } else {
-                // Add new data
                 portfolios.push({ id: Date.now(), title, category, desc, link });
             }
 
-            // UI Feedback
             const msg = document.getElementById('form-msg');
             msg.classList.remove('hidden');
             setTimeout(() => msg.classList.add('hidden'), 3000);
 
-            cancelEdit(); // Reset form & ui
+            cancelEdit(); 
             renderManageList();
             renderPortfolio();
         });
@@ -587,7 +559,6 @@
             document.getElementById('btn-cancel').classList.add('hidden');
         }
 
-        // Init
         renderPortfolio();
     </script>
 </body>
