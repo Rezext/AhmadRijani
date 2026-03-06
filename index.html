@@ -328,7 +328,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -354,17 +354,7 @@
         let currentFilter = 'Semua';
         let portfolios = [];
 
-        const initAuth = async () => {
-            try {
-                await signInAnonymously(auth);
-            } catch (error) {
-                console.error(error);
-                alert("Error Autentikasi: " + error.message);
-            }
-        };
-
         const setupRealtimeListener = () => {
-            if (!auth.currentUser) return;
             const colRef = collection(db, ...collectionPath);
             
             onSnapshot(colRef, (snapshot) => {
@@ -383,10 +373,18 @@
             });
         };
 
-        initAuth();
         onAuthStateChanged(auth, (user) => {
-            if (user) setupRealtimeListener();
+            if (user) {
+                isAuthenticated = true;
+                if(document.getElementById('edit').classList.contains('active')) {
+                    window.renderManageList();
+                }
+            } else {
+                isAuthenticated = false;
+            }
         });
+
+        setupRealtimeListener();
 
         window.toggleMobileMenu = () => {
             document.getElementById('mobile-menu').classList.toggle('hidden');
@@ -431,15 +429,25 @@
             document.getElementById('auth-error').classList.add('hidden');
         };
 
-        window.verifyPassword = () => {
+        window.verifyPassword = async () => {
             const pw = document.getElementById('auth-password').value;
             const err = document.getElementById('auth-error');
-            if (pw === '230101050652') {
+            const btn = document.querySelector('#password-modal button');
+            
+            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Memeriksa...";
+            btn.disabled = true;
+
+            try {
+                await signInWithEmailAndPassword(auth, "ahmadrijani207@gmail.com", pw);
                 isAuthenticated = true;
                 window.closePasswordModal();
                 window.navigate('edit');
-            } else {
+            } catch (error) {
+                err.innerText = "Akses Ditolak! Password salah.";
                 err.classList.remove('hidden');
+            } finally {
+                btn.innerHTML = "Masuk";
+                btn.disabled = false;
             }
         };
 
