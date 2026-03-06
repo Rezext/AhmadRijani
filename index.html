@@ -96,21 +96,21 @@
     <nav class="glass-nav fixed w-full z-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16 sm:h-20">
-                <div class="flex-shrink-0 cursor-pointer text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-accent to-brand-primary" onclick="navigate('home')">
+                <div class="flex-shrink-0 cursor-pointer text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-accent to-brand-primary" onclick="window.navigate('home')">
                     ARPorto.
                 </div>
                 
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-6 lg:space-x-8">
-                        <button onclick="navigate('home')" class="hover:text-brand-accent transition-colors px-3 py-2 rounded-md text-sm font-medium">Dashboard</button>
-                        <button onclick="navigate('portfolio')" class="hover:text-brand-accent transition-colors px-3 py-2 rounded-md text-sm font-medium">Karya & Prestasi</button>
-                        <button onclick="requestEditAccess()" class="hover:text-brand-accent transition-colors px-3 py-2 rounded-md text-sm font-medium">Manajemen Data</button>
-                        <button onclick="navigate('contact')" class="bg-brand-primary hover:bg-indigo-500 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-lg hover:shadow-indigo-500/50">Contact Me</button>
+                        <button onclick="window.navigate('home')" class="hover:text-brand-accent transition-colors px-3 py-2 rounded-md text-sm font-medium">Dashboard</button>
+                        <button onclick="window.navigate('portfolio')" class="hover:text-brand-accent transition-colors px-3 py-2 rounded-md text-sm font-medium">Karya & Prestasi</button>
+                        <button onclick="window.requestEditAccess()" class="hover:text-brand-accent transition-colors px-3 py-2 rounded-md text-sm font-medium">Manajemen Data</button>
+                        <button onclick="window.navigate('contact')" class="bg-brand-primary hover:bg-indigo-500 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-lg hover:shadow-indigo-500/50">Contact Me</button>
                     </div>
                 </div>
 
                 <div class="-mr-2 flex md:hidden">
-                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-brand-card focus:outline-none transition-colors">
+                    <button id="mobile-menu-btn" onclick="window.toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-brand-card focus:outline-none transition-colors">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                 </div>
@@ -119,28 +119,27 @@
 
         <div id="mobile-menu" class="hidden md:hidden bg-brand-card border-b border-gray-700 absolute w-full left-0 top-full shadow-xl">
             <div class="px-4 pt-2 pb-4 space-y-2">
-                <button onclick="navigate('home'); toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-3 rounded-md text-base font-medium transition-colors">Dashboard</button>
-                <button onclick="navigate('portfolio'); toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-3 rounded-md text-base font-medium transition-colors">Karya & Prestasi</button>
-                <button onclick="requestEditAccess(); toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-3 rounded-md text-base font-medium transition-colors">Manajemen Data</button>
-                <button onclick="navigate('contact'); toggleMobileMenu();" class="text-center w-full bg-brand-primary text-white block px-3 py-3 rounded-md text-base font-medium mt-4 shadow-lg">Contact Me</button>
+                <button onclick="window.navigate('home'); window.toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-3 rounded-md text-base font-medium transition-colors">Dashboard</button>
+                <button onclick="window.navigate('portfolio'); window.toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-3 rounded-md text-base font-medium transition-colors">Karya & Prestasi</button>
+                <button onclick="window.requestEditAccess(); window.toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-3 rounded-md text-base font-medium transition-colors">Manajemen Data</button>
+                <button onclick="window.navigate('contact'); window.toggleMobileMenu();" class="text-center w-full bg-brand-primary text-white block px-3 py-3 rounded-md text-base font-medium mt-4 shadow-lg">Contact Me</button>
             </div>
         </div>
     </nav>
 
     <div id="password-modal" class="fixed inset-0 z-[60] hidden modal-overlay flex items-center justify-center p-4">
         <div class="bg-brand-card p-6 sm:p-8 rounded-2xl border border-gray-700 w-full max-w-sm shadow-2xl relative">
-            <button onclick="closePasswordModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white p-2"><i class="fas fa-times"></i></button>
+            <button onclick="window.closePasswordModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white p-2"><i class="fas fa-times"></i></button>
             <h3 class="text-xl font-bold mb-4 text-center">Akses Terkunci</h3>
             <p class="text-sm text-gray-400 mb-6 text-center">Masukkan password untuk masuk ke Manajemen Data.</p>
             <input type="password" id="auth-password" class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent mb-2" placeholder="Password...">
             <p id="auth-error" class="text-red-400 text-xs hidden mb-4 text-center">Password salah!</p>
-            <button onclick="verifyPassword()" class="w-full bg-brand-primary hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-lg transition-colors mt-2">Masuk</button>
+            <button onclick="window.verifyPassword()" class="w-full bg-brand-primary hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-lg transition-colors mt-2">Masuk</button>
         </div>
     </div>
 
     <main class="flex-grow pt-20 sm:pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         
-        <!-- SECTION 1: DASHBOARD UTAMA -->
         <section id="home" class="section-page active">
             <div class="flex flex-col-reverse md:flex-row items-center justify-between mt-8 sm:mt-10 lg:mt-20 gap-10 sm:gap-12">
                 <div class="w-full md:w-3/5 space-y-4 sm:space-y-6 text-center md:text-left">
@@ -152,10 +151,10 @@
                         Saya Ahmad Rijani Mahasiswa aktif Universitas Islam Negeri Antasari yang berdedikasi memberikan dan betanggung jawab dengan baik atas segala tugas yang diberikan.
                     </p>
                     <div class="pt-2 sm:pt-4 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start fade-in-up delay-300">
-                        <button onclick="navigate('portfolio')" class="w-full sm:w-auto bg-gradient-to-r from-brand-accent to-brand-primary text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-brand-primary/30">
+                        <button onclick="window.navigate('portfolio')" class="w-full sm:w-auto bg-gradient-to-r from-brand-accent to-brand-primary text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-brand-primary/30">
                             Lihat Portofolio
                         </button>
-                        <button onclick="navigate('contact')" class="w-full sm:w-auto border border-brand-accent text-brand-accent px-8 py-3 rounded-full font-semibold hover:bg-brand-accent hover:text-white transition-all">
+                        <button onclick="window.navigate('contact')" class="w-full sm:w-auto border border-brand-accent text-brand-accent px-8 py-3 rounded-full font-semibold hover:bg-brand-accent hover:text-white transition-all">
                             Hire Me
                         </button>
                     </div>
@@ -175,46 +174,46 @@
                 <div class="bg-brand-card p-5 sm:p-6 rounded-2xl text-center border border-gray-800 hover:border-brand-primary transition-colors">
                     <i class="fas fa-brain text-2xl sm:text-3xl text-brand-accent mb-2 sm:mb-3"></i>
                     <h3 class="font-bold text-base sm:text-xl">Manajemen Proyek</h3>
-                    <p class="text-gray-400 text-xs sm:text-sm mt-1">Minat 1</p>
+                    <p class="text-gray-400 text-xs sm:text-sm mt-1">Sistematis & Terukur</p>
                 </div>
                 <div class="bg-brand-card p-5 sm:p-6 rounded-2xl text-center border border-gray-800 hover:border-brand-primary transition-colors">
                     <i class="fas fa-chart-line text-2xl sm:text-3xl text-brand-primary mb-2 sm:mb-3"></i>
-                    <h3 class="font-bold text-base sm:text-xl">Design Grafis</h3>
-                    <p class="text-gray-400 text-xs sm:text-sm mt-1">Minat 2</p>
+                    <h3 class="font-bold text-base sm:text-xl">Trading & Ekonomi</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm mt-1">Analisis Data</p>
                 </div>
                 <div class="bg-brand-card p-5 sm:p-6 rounded-2xl text-center border border-gray-800 hover:border-brand-primary transition-colors">
                     <i class="fas fa-code text-2xl sm:text-3xl text-brand-accent mb-2 sm:mb-3"></i>
                     <h3 class="font-bold text-base sm:text-xl">Web & AI Prompt</h3>
-                    <p class="text-gray-400 text-xs sm:text-sm mt-1">Minat 3</p>
+                    <p class="text-gray-400 text-xs sm:text-sm mt-1">Otomasi Logis</p>
                 </div>
                 <div class="bg-brand-card p-5 sm:p-6 rounded-2xl text-center border border-gray-800 hover:border-brand-primary transition-colors">
                     <i class="fas fa-music text-2xl sm:text-3xl text-brand-primary mb-2 sm:mb-3"></i>
-                    <h3 class="font-bold text-base sm:text-xl">Musik</h3>
-                    <p class="text-gray-400 text-xs sm:text-sm mt-1">Minat 4</p>
+                    <h3 class="font-bold text-base sm:text-xl">Psikologi & Musik</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm mt-1">Harmoni & Empati</p>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 2: PORTOFOLIO VIEW -->
         <section id="portfolio" class="section-page">
             <div class="text-center mb-8 sm:mb-10 mt-6 sm:mt-10">
                 <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Karya & <span class="text-brand-accent">Prestasi</span></h2>
-                <p class="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base">Eksplorasi jejak pencapaian, riset, dan pengembangan diri.</p>
+                <p class="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base">Eksplorasi jejak pencapaian, riset kuantitatif, dan pengembangan diri.</p>
             </div>
+
             <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-10" id="filter-container">
-                <button onclick="filterPortfolio('Semua')" class="filter-btn active border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Semua</button>
-                <button onclick="filterPortfolio('Teknologi (Web & AI Prompting)')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Teknologi</button>
-                <button onclick="filterPortfolio('Prestasi Akademik')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Akademik</button>
-                <button onclick="filterPortfolio('Prestasi Non Akademik')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Non Akademik</button>
-                <button onclick="filterPortfolio('Sertifikat Kemahiran Profesional')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Sertifikat</button>
-                <button onclick="filterPortfolio('Design Grafis')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Grafis</button>
+                <button onclick="window.filterPortfolio('Semua')" class="filter-btn active border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Semua</button>
+                <button onclick="window.filterPortfolio('Teknologi (Web & AI Prompting)')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Teknologi</button>
+                <button onclick="window.filterPortfolio('Prestasi Akademik')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Akademik</button>
+                <button onclick="window.filterPortfolio('Prestasi Non Akademik')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Non Akademik</button>
+                <button onclick="window.filterPortfolio('Sertifikat Kemahiran Profesional')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Sertifikat</button>
+                <button onclick="window.filterPortfolio('Design Grafis')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Grafis</button>
             </div>
             
             <div id="portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                <p class="text-brand-accent col-span-full text-center py-10 text-sm animate-pulse"><i class="fas fa-spinner fa-spin mr-2"></i> Mengambil data dari Firebase...</p>
             </div>
         </section>
 
-        <!-- SECTION 3: MANAJEMEN DATA -->
         <section id="edit" class="section-page">
             <div class="max-w-4xl mx-auto mt-6 sm:mt-10">
                 
@@ -252,29 +251,28 @@
                             <textarea id="p-desc" rows="4" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all"></textarea>
                         </div>
 
-                        <div id="form-msg" class="hidden text-green-400 text-xs sm:text-sm py-2"><i class="fas fa-check-circle"></i> Data berhasil disimpan!</div>
+                        <div id="form-msg" class="hidden text-green-400 text-xs sm:text-sm py-2"><i class="fas fa-check-circle"></i> Data berhasil disimpan di Firebase!</div>
 
                         <div class="flex flex-col sm:flex-row gap-3 pt-2">
                             <button type="submit" id="btn-submit" class="w-full sm:flex-1 bg-brand-primary hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-lg text-sm sm:text-base">Simpan Data</button>
-                            <button type="button" onclick="cancelEdit()" id="btn-cancel" class="hidden w-full sm:w-auto bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 px-6 rounded-lg transition-colors text-sm sm:text-base">Batal</button>
+                            <button type="button" onclick="window.cancelEdit()" id="btn-cancel" class="hidden w-full sm:w-auto bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 px-6 rounded-lg transition-colors text-sm sm:text-base">Batal</button>
                         </div>
                     </form>
                 </div>
 
                 <div class="bg-brand-card rounded-2xl p-5 sm:p-8 border border-gray-700 shadow-2xl">
-                    <h3 class="text-lg sm:text-xl font-bold mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">Daftar Portofolio Saat Ini</h3>
+                    <h3 class="text-lg sm:text-xl font-bold mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">Daftar Portofolio Saat Ini (Database)</h3>
                     <div id="manage-list" class="space-y-3 sm:space-y-4">
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 4: CONTACT PERSON -->
         <section id="contact" class="section-page">
             <div class="max-w-4xl mx-auto mt-6 sm:mt-10">
                 <div class="text-center mb-8 sm:mb-12">
                     <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Mari <span class="text-brand-accent">Berdikusi</span></h2>
-                    <p class="text-gray-400 text-sm sm:text-base px-2">Tertarik untuk kolaborasi riset, analisis data, atau mempekerjakan saya? Hubungi via form di bawah.</p>
+                    <p class="text-gray-400 text-sm sm:text-base px-2">Tertarik untuk kolaborasi riset kuantitatif, analisis data, atau mempekerjakan saya? Hubungi via form di bawah.</p>
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-8 sm:gap-12">
@@ -327,60 +325,85 @@
         <p>&copy; 2026 Ahmad Rijani. Profesional, Bertanggung Jawab, dan Amanah.</p>
     </footer>
 
-    <script>
-        let isAuthenticated = false;
-        let currentFilter = 'Semua';
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDFx_sT5OQbyog6o2WP_zTyVFTryh0dtGQ",
+            authDomain: "my-portofolio-3e3cc.firebaseapp.com",
+            projectId: "my-portofolio-3e3cc",
+            storageBucket: "my-portofolio-3e3cc.firebasestorage.app",
+            messagingSenderId: "466279704920",
+            appId: "1:466279704920:web:e40ae8b14ec77113829d2d",
+            measurementId: "G-5THH5SVVFM"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
         
-        let portfolios = [
-            {
-                id: 1,
-                title: "Otomasi Script Dashboard Admin",
-                category: "Teknologi (Web & AI Prompting)",
-                desc: "Pengembangan sistem web dashboard efisien dibantu dengan optimalisasi AI Prompting untuk analisis data.",
-                link: ""
-            },
-            {
-                id: 2,
-                title: "Penelitian Kuantitatif Kebiasaan Belajar",
-                category: "Prestasi Akademik",
-                desc: "Riset metodologi kuantitatif MPI mengenai hubungan gaya belajar dan presisi akademik dengan alat uji SPSS.",
-                link: "https://drive.google.com/preview"
-            },
-            {
-                id: 3,
-                title: "Komposisi Musik & Analisis Frekuensi",
-                category: "Prestasi Non Akademik",
-                desc: "Menggabungkan logika matematika dalam harmonisasi chord musik.",
-                link: ""
-            },
-            {
-                id: 4,
-                title: "Sertifikasi Data Analytics (Google)",
-                category: "Sertifikat Kemahiran Profesional",
-                desc: "Penyelesaian program profesional untuk analisis data terstruktur dan visualisasi.",
-                link: "https://drive.google.com/preview"
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'rijani-porto-app';
+        const collectionPath = ['artifacts', appId, 'public', 'data', 'portfolios']; 
+        
+        let isAuthenticated = false;
+        let isDbReady = false;
+        let currentFilter = 'Semua';
+        let portfolios = [];
+
+        const initAuth = async () => {
+            try {
+                await signInAnonymously(auth);
+            } catch (error) {
+                console.error(error);
             }
-        ];
+        };
 
-        function toggleMobileMenu() {
+        const setupRealtimeListener = () => {
+            if (!auth.currentUser) return;
+            const colRef = collection(db, ...collectionPath);
+            
+            onSnapshot(colRef, (snapshot) => {
+                portfolios = [];
+                snapshot.forEach(doc => {
+                    portfolios.push({ id: doc.id, ...doc.data() });
+                });
+                portfolios.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                
+                isDbReady = true;
+                window.renderPortfolio();
+                if(isAuthenticated) window.renderManageList();
+            }, (error) => {
+                console.error(error);
+            });
+        };
+
+        initAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) setupRealtimeListener();
+        });
+
+        window.toggleMobileMenu = () => {
             document.getElementById('mobile-menu').classList.toggle('hidden');
-        }
+        };
 
-        function navigate(sectionId) {
+        window.navigate = (sectionId) => {
             document.querySelectorAll('.section-page').forEach(sec => sec.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
             window.scrollTo(0, 0);
 
-            if(sectionId === 'portfolio') renderPortfolio();
-            if(sectionId === 'edit') renderManageList();
-        }
+            if(sectionId === 'portfolio') window.renderPortfolio();
+            if(sectionId === 'edit') window.renderManageList();
+        };
 
         document.getElementById('contact-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const name = document.getElementById('contact-name').value;
             const email = document.getElementById('contact-email').value;
             const msg = document.getElementById('contact-message').value;
-            
             const subject = encodeURIComponent(`Pesan Portofolio dari ${name}`);
             const body = encodeURIComponent(`Nama: ${name}\nEmail: ${email}\n\nPesan:\n${msg}`);
             
@@ -392,47 +415,46 @@
             this.reset();
         });
 
-        function requestEditAccess() {
+        window.requestEditAccess = () => {
             if (isAuthenticated) {
-                navigate('edit');
+                window.navigate('edit');
             } else {
                 document.getElementById('password-modal').classList.remove('hidden');
             }
-        }
+        };
 
-        function closePasswordModal() {
+        window.closePasswordModal = () => {
             document.getElementById('password-modal').classList.add('hidden');
             document.getElementById('auth-password').value = '';
             document.getElementById('auth-error').classList.add('hidden');
-        }
+        };
 
-        function verifyPassword() {
+        window.verifyPassword = () => {
             const pw = document.getElementById('auth-password').value;
             const err = document.getElementById('auth-error');
             if (pw === '230101050652') {
                 isAuthenticated = true;
-                closePasswordModal();
-                navigate('edit');
+                window.closePasswordModal();
+                window.navigate('edit');
             } else {
                 err.classList.remove('hidden');
             }
-        }
+        };
 
-        function filterPortfolio(category) {
+        window.filterPortfolio = (category) => {
             currentFilter = category;
-            
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if(btn.innerText.includes(category.split(' ')[0]) || (category === 'Semua' && btn.innerText === 'Semua')) {
                     btn.classList.add('active');
                 }
             });
+            window.renderPortfolio();
+        };
 
-            renderPortfolio();
-        }
-
-        function renderPortfolio() {
+        window.renderPortfolio = () => {
             const grid = document.getElementById('portfolio-grid');
+            if (!isDbReady) return;
             grid.innerHTML = '';
 
             let filtered = currentFilter === 'Semua' 
@@ -444,7 +466,7 @@
                 return;
             }
 
-            [...filtered].reverse().forEach(item => {
+            filtered.forEach(item => {
                 let icon = 'fa-folder';
                 if(item.category.includes('Teknologi')) icon = 'fa-laptop-code';
                 if(item.category.includes('Akademik')) icon = 'fa-graduation-cap';
@@ -456,7 +478,7 @@
                     : '';
 
                 const card = `
-                    <div class="bg-brand-card rounded-2xl p-5 sm:p-6 border border-gray-700 hover:border-brand-accent transition-all duration-300 hover:-translate-y-2 group shadow-lg flex flex-col h-full">
+                    <div class="bg-brand-card rounded-2xl p-5 sm:p-6 border border-gray-700 hover:border-brand-accent transition-all duration-300 hover:-translate-y-2 group shadow-lg flex flex-col h-full fade-in-up">
                         <div class="w-10 h-10 sm:w-12 sm:h-12 bg-brand-dark rounded-xl flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-brand-accent transition-colors">
                             <i class="fas ${icon} text-lg sm:text-xl text-brand-primary group-hover:text-white"></i>
                         </div>
@@ -472,18 +494,22 @@
                 `;
                 grid.innerHTML += card;
             });
-        }
-    
-        function renderManageList() {
+        };
+
+        window.renderManageList = () => {
             const list = document.getElementById('manage-list');
+            if (!isDbReady) {
+                list.innerHTML = '<p class="text-gray-400 text-sm animate-pulse">Memuat data dari database...</p>';
+                return;
+            }
             list.innerHTML = '';
 
             if (portfolios.length === 0) {
-                list.innerHTML = '<p class="text-gray-400 text-sm text-center">Belum ada data.</p>';
+                list.innerHTML = '<p class="text-gray-400 text-sm text-center">Belum ada data di database.</p>';
                 return;
             }
 
-            [...portfolios].reverse().forEach(item => {
+            portfolios.forEach(item => {
                 list.innerHTML += `
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-brand-dark p-4 rounded-xl border border-gray-700 gap-3 sm:gap-4">
                         <div class="w-full sm:w-auto">
@@ -491,50 +517,64 @@
                             <p class="text-[10px] sm:text-xs text-brand-accent mt-0.5">${item.category}</p>
                         </div>
                         <div class="flex gap-2 w-full sm:w-auto mt-2 sm:mt-0">
-                            <button onclick="editItem(${item.id})" class="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded text-xs sm:text-sm transition-colors"><i class="fas fa-edit"></i> Edit</button>
-                            <button onclick="deleteItem(${item.id})" class="flex-1 sm:flex-none bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded text-xs sm:text-sm transition-colors"><i class="fas fa-trash"></i> Hapus</button>
+                            <button onclick="window.editItem('${item.id}')" class="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded text-xs sm:text-sm transition-colors"><i class="fas fa-edit"></i> Edit</button>
+                            <button onclick="window.deleteItem('${item.id}')" class="flex-1 sm:flex-none bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded text-xs sm:text-sm transition-colors"><i class="fas fa-trash"></i> Hapus</button>
                         </div>
                     </div>
                 `;
             });
-        }
+        };
 
-        document.getElementById('add-portfolio-form').addEventListener('submit', function(e) {
+        document.getElementById('add-portfolio-form').addEventListener('submit', async function(e) {
             e.preventDefault();
+            if (!auth.currentUser) return;
             
+            const btnSubmit = document.getElementById('btn-submit');
+            btnSubmit.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Menyimpan...";
+            btnSubmit.disabled = true;
+
             const idInput = document.getElementById('p-id').value;
             const title = document.getElementById('p-title').value;
             const category = document.getElementById('p-category').value;
             const desc = document.getElementById('p-desc').value;
             const link = document.getElementById('p-link').value;
 
-            if (idInput) {
-                const index = portfolios.findIndex(p => p.id == idInput);
-                if(index !== -1) {
-                    portfolios[index] = { id: parseInt(idInput), title, category, desc, link };
+            try {
+                const colRef = collection(db, ...collectionPath);
+                
+                if (idInput) {
+                    const docRef = doc(db, ...collectionPath, idInput);
+                    await updateDoc(docRef, { title, category, desc, link });
+                } else {
+                    await addDoc(colRef, { title, category, desc, link, createdAt: Date.now() });
                 }
-            } else {
-                portfolios.push({ id: Date.now(), title, category, desc, link });
+
+                const msg = document.getElementById('form-msg');
+                msg.classList.remove('hidden');
+                setTimeout(() => msg.classList.add('hidden'), 3000);
+                window.cancelEdit();
+
+            } catch (error) {
+                console.error(error);
+                alert("Gagal simpan data ke Firebase!");
+            } finally {
+                btnSubmit.innerHTML = "Simpan Data";
+                btnSubmit.disabled = false;
             }
-
-            const msg = document.getElementById('form-msg');
-            msg.classList.remove('hidden');
-            setTimeout(() => msg.classList.add('hidden'), 3000);
-
-            cancelEdit(); 
-            renderManageList();
-            renderPortfolio();
         });
 
-        function deleteItem(id) {
-            if(confirm("Yakin mau hapus data ini?")) {
-                portfolios = portfolios.filter(p => p.id !== id);
-                renderManageList();
-                renderPortfolio();
+        window.deleteItem = async (id) => {
+            if(confirm("Yakin mau hapus data ini dari database?")) {
+                try {
+                    const docRef = doc(db, ...collectionPath, id);
+                    await deleteDoc(docRef);
+                } catch (error) {
+                    console.error(error);
+                }
             }
-        }
+        };
 
-        function editItem(id) {
+        window.editItem = (id) => {
             const item = portfolios.find(p => p.id === id);
             if(!item) return;
 
@@ -549,17 +589,15 @@
             document.getElementById('btn-cancel').classList.remove('hidden');
 
             window.scrollTo({ top: document.getElementById('edit').offsetTop - 80, behavior: 'smooth' });
-        }
+        };
 
-        function cancelEdit() {
+        window.cancelEdit = () => {
             document.getElementById('add-portfolio-form').reset();
             document.getElementById('p-id').value = '';
             document.getElementById('form-title').innerHTML = "Tambah Portofolio Baru";
             document.getElementById('btn-submit').innerHTML = "Simpan Data";
             document.getElementById('btn-cancel').classList.add('hidden');
-        }
-
-        renderPortfolio();
+        };
     </script>
 </body>
 </html>
