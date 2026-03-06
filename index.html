@@ -328,7 +328,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
-        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -356,13 +356,10 @@
 
         const initAuth = async () => {
             try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
+                await signInAnonymously(auth);
             } catch (error) {
                 console.error(error);
+                alert("Error Autentikasi: " + error.message);
             }
         };
 
@@ -382,6 +379,7 @@
                 if(isAuthenticated) window.renderManageList();
             }, (error) => {
                 console.error(error);
+                document.getElementById('portfolio-grid').innerHTML = '<p class="text-red-400 col-span-full text-center py-10 text-sm">Gagal memuat data: ' + error.message + '</p>';
             });
         };
 
@@ -560,7 +558,7 @@
 
             } catch (error) {
                 console.error(error);
-                alert("Gagal simpan data ke Firebase!");
+                alert("Gagal simpan: " + error.message);
             } finally {
                 btnSubmit.innerHTML = "Simpan Data";
                 btnSubmit.disabled = false;
