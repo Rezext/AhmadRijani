@@ -206,7 +206,7 @@
                 <button onclick="window.filterPortfolio('Prestasi Akademik')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Akademik</button>
                 <button onclick="window.filterPortfolio('Prestasi Non Akademik')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Non Akademik</button>
                 <button onclick="window.filterPortfolio('Sertifikat Kemahiran Profesional')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Sertifikat</button>
-                <button onclick="window.filterPortfolio('Design Grafis')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Design</button>
+                <button onclick="window.filterPortfolio('Karya')" class="filter-btn border border-gray-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors hover:border-brand-accent">Karya</button>
             </div>
             
             <div id="portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
@@ -237,7 +237,7 @@
                                     <option value="Prestasi Akademik">Prestasi Akademik</option>
                                     <option value="Prestasi Non Akademik">Prestasi Non Akademik</option>
                                     <option value="Sertifikat Kemahiran Profesional">Sertifikat Kemahiran Profesional</option>
-                                    <option value="Design Grafis">Design Grafis</option>
+                                    <option value="Karya">Karya</option>
                                 </select>
                             </div>
                             <div>
@@ -481,8 +481,7 @@
                 if(item.category.includes('Teknologi')) icon = 'fa-laptop-code';
                 if(item.category.includes('Akademik')) icon = 'fa-graduation-cap';
                 if(item.category.includes('Sertifikat')) icon = 'fa-certificate';
-                if(item.category.includes('Grafis')) icon = 'fa-palette';
-
+                if(item.category === 'Karya') icon = 'fa-palette';
                 let linkHtml = item.link 
                     ? `<a href="${item.link}" target="_blank" class="inline-flex items-center gap-2 mt-4 text-xs font-semibold text-brand-accent hover:text-white transition-colors"><i class="fas fa-external-link-alt"></i> Preview Dokumen</a>` 
                     : '';
