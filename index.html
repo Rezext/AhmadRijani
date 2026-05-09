@@ -89,6 +89,21 @@
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* Custom list style for CV */
+        .cv-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .cv-list li::before {
+            content: "•";
+            color: #38bdf8;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col overflow-x-hidden">
@@ -140,6 +155,7 @@
 
     <main class="flex-grow pt-20 sm:pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         
+        <!-- DASHBOARD / HOME -->
         <section id="home" class="section-page active">
             <div class="flex flex-col-reverse md:flex-row items-center justify-between mt-8 sm:mt-10 lg:mt-20 gap-10 sm:gap-12">
                 <div class="w-full md:w-3/5 space-y-4 sm:space-y-6 text-center md:text-left">
@@ -192,8 +208,25 @@
                     <p class="text-gray-400 text-xs sm:text-sm mt-1">Minat 4</p>
                 </div>
             </div>
+
+            <!-- CV SECTION ADDED HERE -->
+            <div class="mt-16 sm:mt-24 fade-in-up delay-300 border-t border-gray-800 pt-12">
+                <div class="text-center mb-10">
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Curriculum <span class="text-brand-accent">Vitae</span></h2>
+                    <p class="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base">Ringkasan perjalanan akademik dan profesional saya.</p>
+                </div>
+                
+                <div id="cv-display" class="bg-brand-card p-6 sm:p-10 rounded-3xl border border-gray-700 shadow-2xl relative overflow-hidden transition-all">
+                    <!-- Default loading state -->
+                    <div class="text-center text-gray-400 py-10 animate-pulse">
+                        <i class="fas fa-spinner fa-spin text-2xl mb-3"></i>
+                        <p>Memuat Curriculum Vitae...</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
+        <!-- KARYA & PRESTASI -->
         <section id="portfolio" class="section-page">
             <div class="text-center mb-8 sm:mb-10 mt-6 sm:mt-10">
                 <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Karya & <span class="text-brand-accent">Prestasi</span></h2>
@@ -214,60 +247,113 @@
             </div>
         </section>
 
+        <!-- MANAJEMEN DATA -->
         <section id="edit" class="section-page">
             <div class="max-w-4xl mx-auto mt-6 sm:mt-10">
                 
-                <div class="bg-brand-card rounded-2xl p-5 sm:p-8 border border-gray-700 shadow-2xl mb-8 sm:mb-10">
-                    <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4 flex items-center gap-3">
-                        <i class="fas fa-edit text-brand-primary"></i> <span id="form-title">Tambah Portofolio Baru</span>
-                    </h2>
-                    
-                    <form id="add-portfolio-form" class="space-y-4 sm:space-y-5">
-                        <input type="hidden" id="p-id">
-                        <div>
-                            <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Judul Proyek / Prestasi</label>
-                            <input type="text" id="p-title" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all">
-                        </div>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-                            <div>
-                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Kategori</label>
-                                <select id="p-category" class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all">
-                                    <option value="Teknologi (Web & AI Prompting)">Teknologi (Web & AI Prompting)</option>
-                                    <option value="Prestasi Akademik">Prestasi Akademik</option>
-                                    <option value="Prestasi Non Akademik">Prestasi Non Akademik</option>
-                                    <option value="Sertifikat Kemahiran Profesional">Sertifikat Kemahiran Profesional</option>
-                                    <option value="Karya">Karya</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Link G-Drive (Opsional)</label>
-                                <input type="url" id="p-link" class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all" placeholder="https://drive.google.com/...">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Deskripsi Singkat</label>
-                            <textarea id="p-desc" rows="4" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all"></textarea>
-                        </div>
-
-                        <div id="form-msg" class="hidden text-green-400 text-xs sm:text-sm py-2"><i class="fas fa-check-circle"></i> Data berhasil disimpan di Firebase!</div>
-
-                        <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                            <button type="submit" id="btn-submit" class="w-full sm:flex-1 bg-brand-primary hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-lg text-sm sm:text-base">Simpan Data</button>
-                            <button type="button" onclick="window.cancelEdit()" id="btn-cancel" class="hidden w-full sm:w-auto bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 px-6 rounded-lg transition-colors text-sm sm:text-base">Batal</button>
-                        </div>
-                    </form>
+                <!-- TABS FOR MANAJEMEN -->
+                <div class="flex flex-wrap gap-2 sm:gap-4 mb-6 sm:mb-8 bg-brand-card p-2 rounded-xl border border-gray-700">
+                    <button onclick="window.switchEditTab('portfolio')" id="tab-portfolio" class="flex-1 py-3 rounded-lg bg-brand-primary text-white font-semibold transition-all shadow-md text-sm sm:text-base">
+                        <i class="fas fa-folder-open mr-2"></i>Kelola Portofolio
+                    </button>
+                    <button onclick="window.switchEditTab('cv')" id="tab-cv" class="flex-1 py-3 rounded-lg bg-transparent text-gray-400 hover:text-white transition-all text-sm sm:text-base">
+                        <i class="fas fa-file-alt mr-2"></i>Kelola CV Pribadi
+                    </button>
                 </div>
 
-                <div class="bg-brand-card rounded-2xl p-5 sm:p-8 border border-gray-700 shadow-2xl">
-                    <h3 class="text-lg sm:text-xl font-bold mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">Daftar Portofolio Saat Ini (Database)</h3>
-                    <div id="manage-list" class="space-y-3 sm:space-y-4">
+                <!-- SECTION KELOLA PORTOFOLIO -->
+                <div id="edit-portfolio-section">
+                    <div class="bg-brand-card rounded-2xl p-5 sm:p-8 border border-gray-700 shadow-2xl mb-8 sm:mb-10">
+                        <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4 flex items-center gap-3">
+                            <i class="fas fa-edit text-brand-primary"></i> <span id="form-title">Tambah Portofolio Baru</span>
+                        </h2>
+                        
+                        <form id="add-portfolio-form" class="space-y-4 sm:space-y-5">
+                            <input type="hidden" id="p-id">
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Judul Proyek / Prestasi</label>
+                                <input type="text" id="p-title" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all">
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Kategori</label>
+                                    <select id="p-category" class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all">
+                                        <option value="Teknologi (Web & AI Prompting)">Teknologi (Web & AI Prompting)</option>
+                                        <option value="Prestasi Akademik">Prestasi Akademik</option>
+                                        <option value="Prestasi Non Akademik">Prestasi Non Akademik</option>
+                                        <option value="Sertifikat Kemahiran Profesional">Sertifikat Kemahiran Profesional</option>
+                                        <option value="Karya">Karya</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Link G-Drive (Opsional)</label>
+                                    <input type="url" id="p-link" class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all" placeholder="https://drive.google.com/...">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Deskripsi Singkat</label>
+                                <textarea id="p-desc" rows="4" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all"></textarea>
+                            </div>
+
+                            <div id="form-msg" class="hidden text-green-400 text-xs sm:text-sm py-2"><i class="fas fa-check-circle"></i> Data portofolio berhasil disimpan!</div>
+
+                            <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                                <button type="submit" id="btn-submit" class="w-full sm:flex-1 bg-brand-primary hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-lg text-sm sm:text-base">Simpan Data</button>
+                                <button type="button" onclick="window.cancelEdit()" id="btn-cancel" class="hidden w-full sm:w-auto bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 px-6 rounded-lg transition-colors text-sm sm:text-base">Batal</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="bg-brand-card rounded-2xl p-5 sm:p-8 border border-gray-700 shadow-2xl">
+                        <h3 class="text-lg sm:text-xl font-bold mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">Daftar Portofolio Saat Ini</h3>
+                        <div id="manage-list" class="space-y-3 sm:space-y-4">
+                        </div>
                     </div>
                 </div>
+
+                <!-- SECTION KELOLA CV -->
+                <div id="edit-cv-section" class="hidden">
+                    <div class="bg-brand-card rounded-2xl p-5 sm:p-8 border border-gray-700 shadow-2xl mb-8 sm:mb-10">
+                        <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4 flex items-center gap-3">
+                            <i class="fas fa-user-edit text-brand-accent"></i> <span>Edit Curriculum Vitae</span>
+                        </h2>
+                        
+                        <form id="edit-cv-form" class="space-y-5">
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Tentang Saya (Summary)</label>
+                                <textarea id="cv-about" rows="3" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-3 text-sm text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent placeholder-gray-500" placeholder="Ceritakan singkat tentang diri Anda..."></textarea>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Riwayat Pendidikan <span class="text-gray-500 font-normal">(Gunakan baris baru untuk tiap entri/sekolah)</span></label>
+                                <textarea id="cv-education" rows="4" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-3 text-sm text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent placeholder-gray-500" placeholder="Universitas Islam Negeri Antasari - Jurusan X (2022 - Sekarang)&#10;SMA Negeri X Banjarmasin (2019 - 2022)"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Pengalaman / Organisasi <span class="text-gray-500 font-normal">(Gunakan baris baru untuk tiap entri)</span></label>
+                                <textarea id="cv-experience" rows="4" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-3 text-sm text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent placeholder-gray-500" placeholder="Ketua Panitia Acara X (2024)&#10;Anggota BEM Fakultas (2023)"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Keahlian / Skills <span class="text-gray-500 font-normal">(Pisahkan dengan tanda koma)</span></label>
+                                <input type="text" id="cv-skills" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-3 text-sm text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent placeholder-gray-500" placeholder="Manajemen Proyek, Desain Grafis, Public Speaking, HTML/CSS">
+                            </div>
+
+                            <div id="cv-msg" class="hidden text-green-400 text-xs sm:text-sm py-2"><i class="fas fa-check-circle"></i> Data CV berhasil diperbarui! Cek di menu Dashboard.</div>
+
+                            <div class="pt-2">
+                                <button type="submit" id="btn-submit-cv" class="w-full bg-brand-accent hover:bg-sky-500 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-lg text-sm sm:text-base">Update CV Sekarang</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
             </div>
         </section>
 
+        <!-- CONTACT -->
         <section id="contact" class="section-page">
             <div class="max-w-4xl mx-auto mt-6 sm:mt-10">
                 <div class="text-center mb-8 sm:mb-12">
@@ -329,7 +415,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDFx_sT5OQbyog6o2WP_zTyVFTryh0dtGQ",
@@ -348,15 +434,24 @@
         
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'rijani-porto-app';
         const collectionPath = ['artifacts', appId, 'public', 'data', 'portfolios']; 
+        const cvPath = ['artifacts', appId, 'public', 'data', 'cv']; // Path khusus untuk CV
         
         let isAuthenticated = false;
         let isDbReady = false;
         let currentFilter = 'Semua';
         let portfolios = [];
+        let cvDataObj = null;
+
+        const defaultCV = {
+            about: "Saya mahasiswa UIN Antasari yang berminat pada manajemen, desain, dan pengembangan web. Saya orang yang analitis, cepat belajar, dan selalu siap menghadapi tantangan baru.",
+            education: "Universitas Islam Negeri Antasari (Sekarang)\nSMA Negeri di Banjarmasin",
+            experience: "Panitia Divisi Acara Kampus (2024)\nFreelance Data Entry & Design",
+            skills: "Manajemen Proyek, Desain Grafis, Analisis Data, Microsoft Office"
+        };
 
         const setupRealtimeListener = () => {
+            // Listener Portofolio
             const colRef = collection(db, ...collectionPath);
-            
             onSnapshot(colRef, (snapshot) => {
                 portfolios = [];
                 snapshot.forEach(doc => {
@@ -367,10 +462,19 @@
                 isDbReady = true;
                 window.renderPortfolio();
                 if(isAuthenticated) window.renderManageList();
-            }, (error) => {
-                console.error(error);
-                document.getElementById('portfolio-grid').innerHTML = '<p class="text-red-400 col-span-full text-center py-10 text-sm">Gagal memuat data: ' + error.message + '</p>';
-            });
+            }, (error) => console.error(error));
+
+            // Listener CV
+            const cvDocRef = doc(db, ...cvPath, 'main');
+            onSnapshot(cvDocRef, (docSnap) => {
+                if(docSnap.exists()) {
+                    cvDataObj = docSnap.data();
+                } else {
+                    cvDataObj = defaultCV; // Fallback jika belum ada
+                }
+                window.renderCV();
+                if(isAuthenticated) window.populateCVForm();
+            }, (error) => console.error(error));
         };
 
         onAuthStateChanged(auth, (user) => {
@@ -378,6 +482,7 @@
                 isAuthenticated = true;
                 if(document.getElementById('edit').classList.contains('active')) {
                     window.renderManageList();
+                    window.populateCVForm();
                 }
             } else {
                 isAuthenticated = false;
@@ -385,6 +490,8 @@
         });
 
         setupRealtimeListener();
+
+        // ---- UI & NAVIGASI ----
 
         window.toggleMobileMenu = () => {
             document.getElementById('mobile-menu').classList.toggle('hidden');
@@ -396,24 +503,33 @@
             window.scrollTo(0, 0);
 
             if(sectionId === 'portfolio') window.renderPortfolio();
-            if(sectionId === 'edit') window.renderManageList();
+            if(sectionId === 'edit') {
+                window.renderManageList();
+                window.populateCVForm();
+            }
         };
 
-        document.getElementById('contact-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = document.getElementById('contact-name').value;
-            const email = document.getElementById('contact-email').value;
-            const msg = document.getElementById('contact-message').value;
-            const subject = encodeURIComponent(`Pesan Portofolio dari ${name}`);
-            const body = encodeURIComponent(`Nama: ${name}\nEmail: ${email}\n\nPesan:\n${msg}`);
-            
-            window.location.href = `mailto:ahmadrijani207@gmail.com?subject=${subject}&body=${body}`;
-            
-            const msgEl = document.getElementById('contact-msg');
-            msgEl.classList.remove('hidden');
-            setTimeout(() => msgEl.classList.add('hidden'), 3000);
-            this.reset();
-        });
+        // TAB SWITCHER DI MANAJEMEN DATA
+        window.switchEditTab = (tab) => {
+            const secPorto = document.getElementById('edit-portfolio-section');
+            const secCV = document.getElementById('edit-cv-section');
+            const btnPorto = document.getElementById('tab-portfolio');
+            const btnCV = document.getElementById('tab-cv');
+
+            if (tab === 'portfolio') {
+                secPorto.classList.remove('hidden');
+                secCV.classList.add('hidden');
+                btnPorto.className = "flex-1 py-3 rounded-lg bg-brand-primary text-white font-semibold transition-all shadow-md text-sm sm:text-base";
+                btnCV.className = "flex-1 py-3 rounded-lg bg-transparent text-gray-400 hover:text-white transition-all text-sm sm:text-base";
+            } else {
+                secPorto.classList.add('hidden');
+                secCV.classList.remove('hidden');
+                btnCV.className = "flex-1 py-3 rounded-lg bg-brand-accent text-white font-semibold transition-all shadow-md text-sm sm:text-base";
+                btnPorto.className = "flex-1 py-3 rounded-lg bg-transparent text-gray-400 hover:text-white transition-all text-sm sm:text-base";
+            }
+        };
+
+        // ---- AUTHENTICATION ----
 
         window.requestEditAccess = () => {
             if (isAuthenticated) {
@@ -450,6 +566,98 @@
                 btn.disabled = false;
             }
         };
+
+        // ---- RENDER CV (DASHBOARD) ----
+
+        window.renderCV = () => {
+            const cvDiv = document.getElementById('cv-display');
+            if(!cvDataObj) return;
+
+            const skillsArray = cvDataObj.skills ? cvDataObj.skills.split(',').map(s => s.trim()).filter(s => s) : [];
+            const skillsHtml = skillsArray.map(s => `<span class="bg-brand-dark border border-brand-accent/30 text-brand-accent px-3 py-1.5 rounded-md text-xs font-medium">${s}</span>`).join('');
+            
+            const eduList = cvDataObj.education ? cvDataObj.education.split('\n').map(e => e.trim()).filter(e => e).map(e => `<li>${e}</li>`).join('') : '<li>Belum ada data</li>';
+            const expList = cvDataObj.experience ? cvDataObj.experience.split('\n').map(e => e.trim()).filter(e => e).map(e => `<li>${e}</li>`).join('') : '<li>Belum ada data</li>';
+
+            cvDiv.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-12">
+                    <!-- Left Col: Profil & Skills -->
+                    <div class="md:col-span-5 space-y-8">
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-3 flex items-center gap-2"><i class="fas fa-user-circle text-brand-accent"></i> Profil Singkat</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed text-justify">${cvDataObj.about || 'Belum ada deskripsi.'}</p>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i class="fas fa-star text-brand-accent"></i> Keahlian (Skills)</h3>
+                            <div class="flex flex-wrap gap-2">
+                                ${skillsHtml || '<p class="text-gray-500 text-sm">Belum ada skill yang ditambahkan</p>'}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Col: Edukasi & Pengalaman -->
+                    <div class="md:col-span-7 space-y-8 md:border-l md:border-gray-800 md:pl-8">
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i class="fas fa-graduation-cap text-brand-primary"></i> Riwayat Pendidikan</h3>
+                            <ul class="cv-list text-gray-400 text-sm space-y-2">
+                                ${eduList}
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i class="fas fa-briefcase text-brand-primary"></i> Pengalaman & Organisasi</h3>
+                            <ul class="cv-list text-gray-400 text-sm space-y-2">
+                                ${expList}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        // ---- MANAJEMEN CV LOGIC ----
+
+        window.populateCVForm = () => {
+            if(!cvDataObj) return;
+            document.getElementById('cv-about').value = cvDataObj.about || '';
+            document.getElementById('cv-education').value = cvDataObj.education || '';
+            document.getElementById('cv-experience').value = cvDataObj.experience || '';
+            document.getElementById('cv-skills').value = cvDataObj.skills || '';
+        };
+
+        document.getElementById('edit-cv-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            if (!auth.currentUser) return;
+
+            const btn = document.getElementById('btn-submit-cv');
+            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Menyimpan...";
+            btn.disabled = true;
+
+            const cvDataToSave = {
+                about: document.getElementById('cv-about').value,
+                education: document.getElementById('cv-education').value,
+                experience: document.getElementById('cv-experience').value,
+                skills: document.getElementById('cv-skills').value,
+                updatedAt: Date.now()
+            };
+
+            try {
+                const cvDocRef = doc(db, ...cvPath, 'main');
+                await setDoc(cvDocRef, cvDataToSave, { merge: true });
+                
+                const msg = document.getElementById('cv-msg');
+                msg.classList.remove('hidden');
+                setTimeout(() => msg.classList.add('hidden'), 4000);
+            } catch (error) {
+                console.error(error);
+                alert("Gagal simpan CV: " + error.message);
+            } finally {
+                btn.innerHTML = "Update CV Sekarang";
+                btn.disabled = false;
+            }
+        });
+
+
+        // ---- MANAJEMEN PORTOFOLIO LOGIC ----
 
         window.filterPortfolio = (category) => {
             currentFilter = category;
@@ -597,7 +805,7 @@
             document.getElementById('btn-submit').innerHTML = "Update Data";
             document.getElementById('btn-cancel').classList.remove('hidden');
 
-            window.scrollTo({ top: document.getElementById('edit').offsetTop - 80, behavior: 'smooth' });
+            window.scrollTo({ top: document.getElementById('edit-portfolio-section').offsetTop - 80, behavior: 'smooth' });
         };
 
         window.cancelEdit = () => {
@@ -607,6 +815,24 @@
             document.getElementById('btn-submit').innerHTML = "Simpan Data";
             document.getElementById('btn-cancel').classList.add('hidden');
         };
+
+        // Handle Contact Form
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const msg = document.getElementById('contact-message').value;
+            const subject = encodeURIComponent(`Pesan Portofolio dari ${name}`);
+            const body = encodeURIComponent(`Nama: ${name}\nEmail: ${email}\n\nPesan:\n${msg}`);
+            
+            window.location.href = `mailto:ahmadrijani207@gmail.com?subject=${subject}&body=${body}`;
+            
+            const msgEl = document.getElementById('contact-msg');
+            msgEl.classList.remove('hidden');
+            setTimeout(() => msgEl.classList.add('hidden'), 3000);
+            this.reset();
+        });
+
     </script>
 </body>
 </html>
