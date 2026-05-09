@@ -209,7 +209,7 @@
                 </div>
             </div>
 
-            <!-- CV SECTION ADDED HERE -->
+            <!-- CV SECTION -->
             <div class="mt-16 sm:mt-24 fade-in-up delay-300 border-t border-gray-800 pt-12">
                 <div class="text-center mb-10">
                     <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Curriculum <span class="text-brand-accent">Vitae</span></h2>
@@ -217,7 +217,6 @@
                 </div>
                 
                 <div id="cv-display" class="bg-brand-card p-6 sm:p-10 rounded-3xl border border-gray-700 shadow-2xl relative overflow-hidden transition-all">
-                    <!-- Default loading state -->
                     <div class="text-center text-gray-400 py-10 animate-pulse">
                         <i class="fas fa-spinner fa-spin text-2xl mb-3"></i>
                         <p>Memuat Curriculum Vitae...</p>
@@ -322,23 +321,43 @@
                         
                         <form id="edit-cv-form" class="space-y-5">
                             <div>
-                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Tentang Saya (Summary)</label>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Profil Singkat</label>
                                 <textarea id="cv-about" rows="3" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-3 text-sm text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent placeholder-gray-500" placeholder="Ceritakan singkat tentang diri Anda..."></textarea>
                             </div>
                             
                             <div>
-                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Riwayat Pendidikan <span class="text-gray-500 font-normal">(Gunakan baris baru untuk tiap entri/sekolah)</span></label>
-                                <textarea id="cv-education" rows="4" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-3 text-sm text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent placeholder-gray-500" placeholder="Universitas Islam Negeri Antasari - Jurusan X (2022 - Sekarang)&#10;SMA Negeri X Banjarmasin (2019 - 2022)"></textarea>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Riwayat Pendidikan <span class="text-gray-500 font-normal">(Baris baru per entri)</span></label>
+                                <textarea id="cv-education" rows="3" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-3 text-sm text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent placeholder-gray-500" placeholder="UIN Antasari (2022 - Sekarang)"></textarea>
                             </div>
 
                             <div>
-                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Pengalaman / Organisasi <span class="text-gray-500 font-normal">(Gunakan baris baru untuk tiap entri)</span></label>
-                                <textarea id="cv-experience" rows="4" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-3 text-sm text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent placeholder-gray-500" placeholder="Ketua Panitia Acara X (2024)&#10;Anggota BEM Fakultas (2023)"></textarea>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Pengalaman Organisasi <span class="text-gray-500 font-normal">(Baris baru per entri)</span></label>
+                                <textarea id="cv-org" rows="3" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-3 text-sm text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent placeholder-gray-500" placeholder="Ketua Panitia X (2024)"></textarea>
                             </div>
 
                             <div>
-                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Keahlian / Skills <span class="text-gray-500 font-normal">(Pisahkan dengan tanda koma)</span></label>
-                                <input type="text" id="cv-skills" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-3 text-sm text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent placeholder-gray-500" placeholder="Manajemen Proyek, Desain Grafis, Public Speaking, HTML/CSS">
+                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Pengalaman Kerja <span class="text-gray-500 font-normal">(Baris baru per entri)</span></label>
+                                <textarea id="cv-work" rows="3" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-3 text-sm text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent placeholder-gray-500" placeholder="Freelance Designer (2023)"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Prestasi <span class="text-gray-500 font-normal">(Baris baru per entri)</span></label>
+                                <textarea id="cv-achievements" rows="3" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-3 text-sm text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent placeholder-gray-500" placeholder="Juara 1 Lomba Web (2024)"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Sertifikat Profesional <span class="text-gray-500 font-normal">(Baris baru per entri)</span></label>
+                                <textarea id="cv-certs" rows="3" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-3 text-sm text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent placeholder-gray-500" placeholder="Sertifikat BNSP Web Developer"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Karya <span class="text-gray-500 font-normal">(Baris baru per entri)</span></label>
+                                <textarea id="cv-works" rows="3" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-3 text-sm text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent placeholder-gray-500" placeholder="Aplikasi Portofolio Pribadi (2026)"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Sosmed dan Email <span class="text-gray-500 font-normal">(Baris baru per entri, misal: Email: x@x.com)</span></label>
+                                <textarea id="cv-socials" rows="3" required class="w-full bg-brand-dark border border-gray-600 rounded-lg px-3 py-3 text-sm text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent placeholder-gray-500" placeholder="Email: ahmadrijani207@gmail.com&#10;LinkedIn: Ahmad Rijani"></textarea>
                             </div>
 
                             <div id="cv-msg" class="hidden text-green-400 text-xs sm:text-sm py-2"><i class="fas fa-check-circle"></i> Data CV berhasil diperbarui! Cek di menu Dashboard.</div>
@@ -434,7 +453,7 @@
         
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'rijani-porto-app';
         const collectionPath = ['artifacts', appId, 'public', 'data', 'portfolios']; 
-        const cvPath = ['artifacts', appId, 'public', 'data', 'cv']; // Path khusus untuk CV
+        const cvPath = ['artifacts', appId, 'public', 'data', 'cv']; // Path khusus CV
         
         let isAuthenticated = false;
         let isDbReady = false;
@@ -445,8 +464,12 @@
         const defaultCV = {
             about: "Saya mahasiswa UIN Antasari yang berminat pada manajemen, desain, dan pengembangan web. Saya orang yang analitis, cepat belajar, dan selalu siap menghadapi tantangan baru.",
             education: "Universitas Islam Negeri Antasari (Sekarang)\nSMA Negeri di Banjarmasin",
-            experience: "Panitia Divisi Acara Kampus (2024)\nFreelance Data Entry & Design",
-            skills: "Manajemen Proyek, Desain Grafis, Analisis Data, Microsoft Office"
+            org: "Anggota BEM Fakultas (2023)",
+            work: "Freelance Designer (2023 - 2024)",
+            achievements: "Juara Harapan 1 Lomba Essai (2023)",
+            certs: "Sertifikat Pelatihan Web Development",
+            works: "Website Portofolio Pribadi",
+            socials: "Email: ahmadrijani207@gmail.com\nLinkedIn: Ahmad Rijani\nWA: 082150658810"
         };
 
         const setupRealtimeListener = () => {
@@ -470,7 +493,7 @@
                 if(docSnap.exists()) {
                     cvDataObj = docSnap.data();
                 } else {
-                    cvDataObj = defaultCV; // Fallback jika belum ada
+                    cvDataObj = defaultCV;
                 }
                 window.renderCV();
                 if(isAuthenticated) window.populateCVForm();
@@ -568,46 +591,54 @@
         };
 
         // ---- RENDER CV (DASHBOARD) ----
+        const generateListHTML = (text) => {
+            if (!text) return '<li>Belum ada data</li>';
+            return text.split('\n').map(e => e.trim()).filter(e => e).map(e => `<li>${e}</li>`).join('');
+        };
 
         window.renderCV = () => {
             const cvDiv = document.getElementById('cv-display');
             if(!cvDataObj) return;
 
-            const skillsArray = cvDataObj.skills ? cvDataObj.skills.split(',').map(s => s.trim()).filter(s => s) : [];
-            const skillsHtml = skillsArray.map(s => `<span class="bg-brand-dark border border-brand-accent/30 text-brand-accent px-3 py-1.5 rounded-md text-xs font-medium">${s}</span>`).join('');
-            
-            const eduList = cvDataObj.education ? cvDataObj.education.split('\n').map(e => e.trim()).filter(e => e).map(e => `<li>${e}</li>`).join('') : '<li>Belum ada data</li>';
-            const expList = cvDataObj.experience ? cvDataObj.experience.split('\n').map(e => e.trim()).filter(e => e).map(e => `<li>${e}</li>`).join('') : '<li>Belum ada data</li>';
-
             cvDiv.innerHTML = `
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-12">
-                    <!-- Left Col: Profil & Skills -->
-                    <div class="md:col-span-5 space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
+                    <!-- KOLOM 1 -->
+                    <div class="space-y-8">
                         <div>
                             <h3 class="text-xl font-bold text-white mb-3 flex items-center gap-2"><i class="fas fa-user-circle text-brand-accent"></i> Profil Singkat</h3>
                             <p class="text-gray-400 text-sm leading-relaxed text-justify">${cvDataObj.about || 'Belum ada deskripsi.'}</p>
                         </div>
                         <div>
-                            <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i class="fas fa-star text-brand-accent"></i> Keahlian (Skills)</h3>
-                            <div class="flex flex-wrap gap-2">
-                                ${skillsHtml || '<p class="text-gray-500 text-sm">Belum ada skill yang ditambahkan</p>'}
-                            </div>
+                            <h3 class="text-xl font-bold text-white mb-3 flex items-center gap-2"><i class="fas fa-graduation-cap text-brand-primary"></i> Riwayat Pendidikan</h3>
+                            <ul class="cv-list text-gray-400 text-sm space-y-2">${generateListHTML(cvDataObj.education)}</ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-3 flex items-center gap-2"><i class="fas fa-users text-brand-accent"></i> Pengalaman Organisasi</h3>
+                            <ul class="cv-list text-gray-400 text-sm space-y-2">${generateListHTML(cvDataObj.org)}</ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-3 flex items-center gap-2"><i class="fas fa-briefcase text-brand-primary"></i> Pengalaman Kerja</h3>
+                            <ul class="cv-list text-gray-400 text-sm space-y-2">${generateListHTML(cvDataObj.work)}</ul>
                         </div>
                     </div>
                     
-                    <!-- Right Col: Edukasi & Pengalaman -->
-                    <div class="md:col-span-7 space-y-8 md:border-l md:border-gray-800 md:pl-8">
+                    <!-- KOLOM 2 -->
+                    <div class="space-y-8 md:border-l md:border-gray-800 md:pl-8">
                         <div>
-                            <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i class="fas fa-graduation-cap text-brand-primary"></i> Riwayat Pendidikan</h3>
-                            <ul class="cv-list text-gray-400 text-sm space-y-2">
-                                ${eduList}
-                            </ul>
+                            <h3 class="text-xl font-bold text-white mb-3 flex items-center gap-2"><i class="fas fa-trophy text-yellow-500"></i> Prestasi</h3>
+                            <ul class="cv-list text-gray-400 text-sm space-y-2">${generateListHTML(cvDataObj.achievements)}</ul>
                         </div>
                         <div>
-                            <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i class="fas fa-briefcase text-brand-primary"></i> Pengalaman & Organisasi</h3>
-                            <ul class="cv-list text-gray-400 text-sm space-y-2">
-                                ${expList}
-                            </ul>
+                            <h3 class="text-xl font-bold text-white mb-3 flex items-center gap-2"><i class="fas fa-certificate text-brand-accent"></i> Sertifikat Profesional</h3>
+                            <ul class="cv-list text-gray-400 text-sm space-y-2">${generateListHTML(cvDataObj.certs)}</ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-3 flex items-center gap-2"><i class="fas fa-palette text-brand-primary"></i> Karya</h3>
+                            <ul class="cv-list text-gray-400 text-sm space-y-2">${generateListHTML(cvDataObj.works)}</ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-3 flex items-center gap-2"><i class="fas fa-hashtag text-brand-accent"></i> Sosmed & Email</h3>
+                            <ul class="cv-list text-gray-400 text-sm space-y-2">${generateListHTML(cvDataObj.socials)}</ul>
                         </div>
                     </div>
                 </div>
@@ -620,8 +651,12 @@
             if(!cvDataObj) return;
             document.getElementById('cv-about').value = cvDataObj.about || '';
             document.getElementById('cv-education').value = cvDataObj.education || '';
-            document.getElementById('cv-experience').value = cvDataObj.experience || '';
-            document.getElementById('cv-skills').value = cvDataObj.skills || '';
+            document.getElementById('cv-org').value = cvDataObj.org || '';
+            document.getElementById('cv-work').value = cvDataObj.work || '';
+            document.getElementById('cv-achievements').value = cvDataObj.achievements || '';
+            document.getElementById('cv-certs').value = cvDataObj.certs || '';
+            document.getElementById('cv-works').value = cvDataObj.works || '';
+            document.getElementById('cv-socials').value = cvDataObj.socials || '';
         };
 
         document.getElementById('edit-cv-form').addEventListener('submit', async function(e) {
@@ -635,8 +670,12 @@
             const cvDataToSave = {
                 about: document.getElementById('cv-about').value,
                 education: document.getElementById('cv-education').value,
-                experience: document.getElementById('cv-experience').value,
-                skills: document.getElementById('cv-skills').value,
+                org: document.getElementById('cv-org').value,
+                work: document.getElementById('cv-work').value,
+                achievements: document.getElementById('cv-achievements').value,
+                certs: document.getElementById('cv-certs').value,
+                works: document.getElementById('cv-works').value,
+                socials: document.getElementById('cv-socials').value,
                 updatedAt: Date.now()
             };
 
