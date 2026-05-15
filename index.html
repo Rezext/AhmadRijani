@@ -462,14 +462,14 @@
         
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'rijani-porto-app';
         const collectionPath = ['artifacts', appId, 'public', 'data', 'portfolios']; 
-        const cvPath = ['artifacts', appId, 'public', 'data', 'cv']; 
+        const cvPath = ['artifacts', appId, 'public', 'data', 'cv']; // Path khusus CV
         
         let isAuthenticated = false;
         let isDbReady = false;
         let currentFilter = 'Semua';
         let portfolios = [];
         let cvDataObj = null;
-        let pendingAction = 'edit'; 
+        let pendingAction = 'edit'; // 'edit' or 'download'
 
         const defaultCV = {
             about: "Saya mahasiswa UIN Antasari yang berminat pada manajemen, desain, dan pengembangan web. Saya orang yang analitis, cepat belajar, dan selalu siap menghadapi tantangan baru.",
@@ -483,6 +483,7 @@
         };
 
         const setupRealtimeListener = () => {
+            // Listener Portofolio
             const colRef = collection(db, ...collectionPath);
             onSnapshot(colRef, (snapshot) => {
                 portfolios = [];
@@ -496,6 +497,7 @@
                 if(isAuthenticated && document.getElementById('edit').classList.contains('active')) window.renderManageList();
             }, (error) => console.error(error));
 
+            // Listener CV
             const cvDocRef = doc(db, ...cvPath, 'main');
             onSnapshot(cvDocRef, (docSnap) => {
                 if(docSnap.exists()) {
@@ -606,94 +608,34 @@
             }
         };
 
-        // Pembuat List untuk UI Dashboard
-        const generateListHTML = (text) => {
-            if (!text) return '<li>Belum ada data</li>';
-            return text.split('\n').map(e => e.trim()).filter(e => e).map(e => `<li>${e}</li>`).join('');
-        };
-
-        // ---- DOWNLOAD PDF LOGIC (TEMPLATE WORD) ----
+        // ---- DOWNLOAD PDF LOGIC ----
         window.downloadCVPDF = () => {
+            const element = document.getElementById('cv-display');
             const btn = document.getElementById('btn-download-cv');
             const originalHTML = btn.innerHTML;
             
             btn.innerHTML = "<i class='fas fa-spinner fa-spin mr-2'></i> Sedang Menyiapkan PDF...";
             btn.disabled = true;
 
-            if (!cvDataObj) {
-                alert("Data CV belum termuat, mohon tunggu sebentar!");
-                btn.innerHTML = originalHTML;
-                btn.disabled = false;
-                return;
-            }
-
-            // Fungsi untuk list di PDF
-            const genList = (text) => {
-                if (!text) return '-';
-                return '<ul style="margin: 0; padding-left: 20px;">' + text.split('\n').map(e => e.trim()).filter(e => e).map(e => `<li>${e}</li>`).join('') + '</ul>';
-            };
-
-            // Template persis seperti docx
-            const cvTemplate = `
-                <div style="font-family: 'Times New Roman', Times, serif; color: black; padding: 40px; background: white; width: 800px;">
-                    <h2 style="text-align: center; margin-bottom: 20px; font-weight: bold; font-size: 20px; text-decoration: underline;">CURRICULUM VITAE</h2>
-                    
-                    <h3 style="font-size: 14px; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">BIODATA PRIBADI</h3>
-                    <table style="width: 100%; font-size: 14px; margin-bottom: 15px; border-collapse: collapse;">
-                        <tr><td style="width: 150px; padding: 2px 0;">Nama</td><td>: Ahmad Rijani</td></tr>
-                        <tr><td style="padding: 2px 0;">TTL</td><td>: Bungkukan, 26 Febuari 2005</td></tr>
-                        <tr><td style="padding: 2px 0;">Agama</td><td>: Islam</td></tr>
-                        <tr><td style="padding: 2px 0;">Pekerjaan</td><td>: Mahasiswa/Pelajar</td></tr>
-                        <tr><td style="padding: 2px 0; vertical-align: top;">Kontak</td><td>: <br>${cvDataObj.socials ? cvDataObj.socials.replace(/\n/g, '<br>') : '-'}</td></tr>
-                    </table>
-
-                    <h3 style="font-size: 14px; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">PROFIL SINGKAT</h3>
-                    <div style="font-size: 14px; margin-bottom: 15px; text-align: justify;">${genList(cvDataObj.about)}</div>
-
-                    <h3 style="font-size: 14px; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">RIWAYAT PENDIDIKAN</h3>
-                    <div style="font-size: 14px; margin-bottom: 15px;">${genList(cvDataObj.education)}</div>
-
-                    <h3 style="font-size: 14px; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">PENGALAMAN ORGANISASI</h3>
-                    <div style="font-size: 14px; margin-bottom: 15px;">${genList(cvDataObj.org)}</div>
-
-                    <h3 style="font-size: 14px; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">PENGALAMAN KERJA</h3>
-                    <div style="font-size: 14px; margin-bottom: 15px;">${genList(cvDataObj.work)}</div>
-
-                    <h3 style="font-size: 14px; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">PRESTASI</h3>
-                    <div style="font-size: 14px; margin-bottom: 15px;">${genList(cvDataObj.achievements)}</div>
-
-                    <h3 style="font-size: 14px; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">SERTIFIKASI PROFESIONAL</h3>
-                    <div style="font-size: 14px; margin-bottom: 15px;">${genList(cvDataObj.certs)}</div>
-
-                    <h3 style="font-size: 14px; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">KARYA</h3>
-                    <div style="font-size: 14px; margin-bottom: 15px;">${genList(cvDataObj.works)}</div>
-                </div>
-            `;
-
-            // Dimasukkan ke sistem sementara buat dirender
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = cvTemplate;
-            tempDiv.style.position = 'absolute';
-            tempDiv.style.left = '-9999px';
-            tempDiv.style.top = '0';
-            document.body.appendChild(tempDiv);
-
             const opt = {
-                margin:       0.5, 
+                margin:       0.3,
                 filename:     'CV_Ahmad_Rijani.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, logging: false }, 
+                html2canvas:  { 
+                    scale: 2, 
+                    backgroundColor: '#1e293b', // WAJIB DISET agar gak keputihan/blank
+                    useCORS: true,
+                    scrollY: 0 // WAJIB DISET agar gak kepotong kalau lagi scroll
+                }, 
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
             };
 
-            html2pdf().set(opt).from(tempDiv).save().then(() => {
+            html2pdf().set(opt).from(element).save().then(() => {
                 btn.innerHTML = originalHTML;
                 btn.disabled = false;
-                document.body.removeChild(tempDiv); // Bersihin sistem setelah kelar
             }).catch(err => {
                 console.error("PDF Error: ", err);
                 btn.innerHTML = "<i class='fas fa-exclamation-triangle mr-2'></i> Gagal Download";
-                document.body.removeChild(tempDiv);
                 setTimeout(() => {
                     btn.innerHTML = originalHTML;
                     btn.disabled = false;
@@ -702,6 +644,11 @@
         };
 
         // ---- RENDER CV (DASHBOARD) ----
+        const generateListHTML = (text) => {
+            if (!text) return '<li>Belum ada data</li>';
+            return text.split('\n').map(e => e.trim()).filter(e => e).map(e => `<li>${e}</li>`).join('');
+        };
+
         window.renderCV = () => {
             const cvDiv = document.getElementById('cv-display');
             if(!cvDataObj) return;
