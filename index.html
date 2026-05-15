@@ -620,9 +620,9 @@
 
             // Helper untuk list
             const generatePDFList = (text) => {
-                if (!text) return '<p style="font-size: 14px; color: #4b5563;">-</p>';
+                if (!text) return '<p style="font-size: 14px; color: #000000;">-</p>';
                 const items = text.split('\n').map(e => e.trim()).filter(e => e);
-                return '<ul style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.6; color: #374151;">' + 
+                return '<ul style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.6; color: #000000;">' + 
                        items.map(e => '<li style="margin-bottom: 6px;">' + e + '</li>').join('') + 
                        '</ul>';
             };
@@ -632,8 +632,8 @@
                 if (!text) return '';
                 return `
                     <div style="margin-bottom: 24px; page-break-inside: avoid;">
-                        <h2 style="font-size: 18px; font-weight: bold; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">${title}</h2>
-                        ${title === 'Profil Singkat' ? `<p style="font-size: 14px; line-height: 1.6; color: #374151; text-align: justify;">${text}</p>` : generatePDFList(text)}
+                        <h2 style="font-size: 18px; font-weight: bold; color: #000000; border-bottom: 2px solid #000000; padding-bottom: 6px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">${title}</h2>
+                        ${title === 'Profil Singkat' ? `<p style="font-size: 14px; line-height: 1.6; color: #000000; text-align: justify;">${text}</p>` : generatePDFList(text)}
                     </div>
                 `;
             };
@@ -641,21 +641,24 @@
             // Buat container HTML khusus untuk diprint dengan styling putih & rapi
             const pdfContainer = document.createElement('div');
             pdfContainer.style.position = 'absolute';
-            pdfContainer.style.top = '-9999px';
-            pdfContainer.style.left = '-9999px';
+            pdfContainer.style.top = '0';
+            pdfContainer.style.left = '0';
+            pdfContainer.style.zIndex = '-9999'; // Sembunyikan di belakang layout utama
+            pdfContainer.style.backgroundColor = '#ffffff';
+            
             pdfContainer.innerHTML = `
-                <div style="padding: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #ffffff; color: #1e293b; max-width: 800px; margin: 0 auto; box-sizing: border-box;">
+                <div style="padding: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #ffffff; color: #000000; width: 800px; margin: 0 auto; box-sizing: border-box;">
                     
-                    <h1 style="text-align: center; font-size: 32px; font-weight: 800; color: #0f172a; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 3px solid #0f172a; padding-bottom: 12px;">Curriculum Vitae</h1>
+                    <h1 style="text-align: center; font-size: 32px; font-weight: 800; color: #000000; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 3px solid #000000; padding-bottom: 12px;">Curriculum Vitae</h1>
                     
-                    <!-- BIODATA SECTION (Sesuai Request) -->
+                    <!-- BIODATA SECTION -->
                     <div style="margin-bottom: 24px; page-break-inside: avoid;">
-                        <h2 style="font-size: 18px; font-weight: bold; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Biodata</h2>
-                        <table style="width: 100%; font-size: 14px; line-height: 1.8; color: #374151;">
-                            <tr><td style="width: 180px; font-weight: 600;">Nama</td><td>: Ahmad Rijani</td></tr>
-                            <tr><td style="width: 180px; font-weight: 600;">Tempat, Tanggal Lahir</td><td>: Bungkukan, 26 Februari 2005</td></tr>
-                            <tr><td style="width: 180px; font-weight: 600;">Agama</td><td>: Islam</td></tr>
-                            <tr><td style="width: 180px; font-weight: 600;">Pekerjaan</td><td>: Mahasiswa/Pelajar</td></tr>
+                        <h2 style="font-size: 18px; font-weight: bold; color: #000000; border-bottom: 2px solid #000000; padding-bottom: 6px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Biodata</h2>
+                        <table style="width: 100%; font-size: 14px; line-height: 1.8; color: #000000;">
+                            <tr><td style="width: 180px; font-weight: bold;">Nama</td><td>: Ahmad Rijani</td></tr>
+                            <tr><td style="width: 180px; font-weight: bold;">Tempat, Tanggal Lahir</td><td>: Bungkukan, 26 Februari 2005</td></tr>
+                            <tr><td style="width: 180px; font-weight: bold;">Agama</td><td>: Islam</td></tr>
+                            <tr><td style="width: 180px; font-weight: bold;">Pekerjaan</td><td>: Mahasiswa/Pelajar</td></tr>
                         </table>
                     </div>
 
@@ -674,10 +677,10 @@
             document.body.appendChild(pdfContainer);
 
             const opt = {
-                margin:       [0, 0, 0, 0], // Margin sudah ditangani oleh padding di div
+                margin:       0,
                 filename:     'CV_Ahmad_Rijani.pdf',
                 image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+                html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#ffffff', scrollY: 0 },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
