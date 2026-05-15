@@ -612,13 +612,7 @@
             return text.split('\n').map(e => e.trim()).filter(e => e).map(e => `<li>${e}</li>`).join('');
         };
 
-        // Pembuat List khusus PDF dengan inline style supaya nggak nge-bug
-        const generatePDFListHTML = (text) => {
-            if (!text) return '<li style="margin-bottom: 6px;">Belum ada data</li>';
-            return text.split('\n').map(e => e.trim()).filter(e => e).map(e => `<li style="margin-bottom: 6px;">${e}</li>`).join('');
-        };
-
-        // ---- DOWNLOAD PDF LOGIC (DIUBAH TOTAL JADI INTERNAL STRING) ----
+        // ---- DOWNLOAD PDF LOGIC (TEMPLATE WORD) ----
         window.downloadCVPDF = () => {
             const btn = document.getElementById('btn-download-cv');
             const originalHTML = btn.innerHTML;
@@ -633,82 +627,73 @@
                 return;
             }
 
-            // HTML dibentuk langsung di memori, dijamin jalan dan CSS-nya sempurna!
+            // Fungsi untuk list di PDF
+            const genList = (text) => {
+                if (!text) return '-';
+                return '<ul style="margin: 0; padding-left: 20px;">' + text.split('\n').map(e => e.trim()).filter(e => e).map(e => `<li>${e}</li>`).join('') + '</ul>';
+            };
+
+            // Template persis seperti docx
             const cvTemplate = `
-                <div style="padding: 40px; font-family: 'Poppins', sans-serif; background-color: white; color: #333;">
-                    <div style="border-bottom: 4px solid #1f2937; padding-bottom: 20px; margin-bottom: 30px;">
-                        <h1 style="font-size: 36px; font-weight: 800; color: #111827; margin: 0 0 10px 0;">Ahmad Rijani</h1>
-                        <p style="color: #38bdf8; font-weight: 700; font-size: 16px; margin: 0 0 16px 0; text-transform: uppercase; letter-spacing: 1px;">Professional | Strategic Thinker</p>
-                        <p style="font-size: 13px; color: #4b5563; line-height: 1.6; margin: 0; text-align: justify;">${cvDataObj.about || ''}</p>
-                    </div>
+                <div style="font-family: 'Times New Roman', Times, serif; color: black; padding: 40px; background: white; width: 800px;">
+                    <h2 style="text-align: center; margin-bottom: 20px; font-weight: bold; font-size: 20px; text-decoration: underline;">CURRICULUM VITAE</h2>
                     
-                    <div style="display: flex; justify-content: space-between;">
-                        <div style="width: 48%;">
-                            <div style="margin-bottom: 30px;">
-                                <h2 style="font-size: 18px; font-weight: 700; color: #111827; border-bottom: 2px solid #e5e7eb; padding-bottom: 5px; margin-bottom: 15px; text-transform: uppercase;">Pendidikan</h2>
-                                <ul style="font-size: 13px; color: #374151; padding-left: 20px; margin: 0;">
-                                    ${generatePDFListHTML(cvDataObj.education)}
-                                </ul>
-                            </div>
-                            <div style="margin-bottom: 30px;">
-                                <h2 style="font-size: 18px; font-weight: 700; color: #111827; border-bottom: 2px solid #e5e7eb; padding-bottom: 5px; margin-bottom: 15px; text-transform: uppercase;">Pengalaman Organisasi</h2>
-                                <ul style="font-size: 13px; color: #374151; padding-left: 20px; margin: 0;">
-                                    ${generatePDFListHTML(cvDataObj.org)}
-                                </ul>
-                            </div>
-                            <div style="margin-bottom: 30px;">
-                                <h2 style="font-size: 18px; font-weight: 700; color: #111827; border-bottom: 2px solid #e5e7eb; padding-bottom: 5px; margin-bottom: 15px; text-transform: uppercase;">Pengalaman Kerja</h2>
-                                <ul style="font-size: 13px; color: #374151; padding-left: 20px; margin: 0;">
-                                    ${generatePDFListHTML(cvDataObj.work)}
-                                </ul>
-                            </div>
-                        </div>
-                        
-                        <div style="width: 48%;">
-                            <div style="margin-bottom: 30px;">
-                                <h2 style="font-size: 18px; font-weight: 700; color: #111827; border-bottom: 2px solid #e5e7eb; padding-bottom: 5px; margin-bottom: 15px; text-transform: uppercase;">Prestasi</h2>
-                                <ul style="font-size: 13px; color: #374151; padding-left: 20px; margin: 0;">
-                                    ${generatePDFListHTML(cvDataObj.achievements)}
-                                </ul>
-                            </div>
-                            <div style="margin-bottom: 30px;">
-                                <h2 style="font-size: 18px; font-weight: 700; color: #111827; border-bottom: 2px solid #e5e7eb; padding-bottom: 5px; margin-bottom: 15px; text-transform: uppercase;">Sertifikat Profesional</h2>
-                                <ul style="font-size: 13px; color: #374151; padding-left: 20px; margin: 0;">
-                                    ${generatePDFListHTML(cvDataObj.certs)}
-                                </ul>
-                            </div>
-                            <div style="margin-bottom: 30px;">
-                                <h2 style="font-size: 18px; font-weight: 700; color: #111827; border-bottom: 2px solid #e5e7eb; padding-bottom: 5px; margin-bottom: 15px; text-transform: uppercase;">Karya</h2>
-                                <ul style="font-size: 13px; color: #374151; padding-left: 20px; margin: 0;">
-                                    ${generatePDFListHTML(cvDataObj.works)}
-                                </ul>
-                            </div>
-                            <div style="margin-bottom: 30px;">
-                                <h2 style="font-size: 18px; font-weight: 700; color: #111827; border-bottom: 2px solid #e5e7eb; padding-bottom: 5px; margin-bottom: 15px; text-transform: uppercase;">Kontak</h2>
-                                <ul style="font-size: 13px; color: #111827; font-weight: 600; list-style-type: none; padding-left: 0; margin: 0;">
-                                    ${generatePDFListHTML(cvDataObj.socials)}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    <h3 style="font-size: 14px; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">BIODATA PRIBADI</h3>
+                    <table style="width: 100%; font-size: 14px; margin-bottom: 15px; border-collapse: collapse;">
+                        <tr><td style="width: 150px; padding: 2px 0;">Nama</td><td>: Ahmad Rijani</td></tr>
+                        <tr><td style="padding: 2px 0;">TTL</td><td>: Bungkukan, 26 Febuari 2005</td></tr>
+                        <tr><td style="padding: 2px 0;">Agama</td><td>: Islam</td></tr>
+                        <tr><td style="padding: 2px 0;">Pekerjaan</td><td>: Mahasiswa/Pelajar</td></tr>
+                        <tr><td style="padding: 2px 0; vertical-align: top;">Kontak</td><td>: <br>${cvDataObj.socials ? cvDataObj.socials.replace(/\n/g, '<br>') : '-'}</td></tr>
+                    </table>
+
+                    <h3 style="font-size: 14px; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">PROFIL SINGKAT</h3>
+                    <div style="font-size: 14px; margin-bottom: 15px; text-align: justify;">${genList(cvDataObj.about)}</div>
+
+                    <h3 style="font-size: 14px; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">RIWAYAT PENDIDIKAN</h3>
+                    <div style="font-size: 14px; margin-bottom: 15px;">${genList(cvDataObj.education)}</div>
+
+                    <h3 style="font-size: 14px; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">PENGALAMAN ORGANISASI</h3>
+                    <div style="font-size: 14px; margin-bottom: 15px;">${genList(cvDataObj.org)}</div>
+
+                    <h3 style="font-size: 14px; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">PENGALAMAN KERJA</h3>
+                    <div style="font-size: 14px; margin-bottom: 15px;">${genList(cvDataObj.work)}</div>
+
+                    <h3 style="font-size: 14px; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">PRESTASI</h3>
+                    <div style="font-size: 14px; margin-bottom: 15px;">${genList(cvDataObj.achievements)}</div>
+
+                    <h3 style="font-size: 14px; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">SERTIFIKASI PROFESIONAL</h3>
+                    <div style="font-size: 14px; margin-bottom: 15px;">${genList(cvDataObj.certs)}</div>
+
+                    <h3 style="font-size: 14px; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">KARYA</h3>
+                    <div style="font-size: 14px; margin-bottom: 15px;">${genList(cvDataObj.works)}</div>
                 </div>
             `;
 
+            // Dimasukkan ke sistem sementara buat dirender
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = cvTemplate;
+            tempDiv.style.position = 'absolute';
+            tempDiv.style.left = '-9999px';
+            tempDiv.style.top = '0';
+            document.body.appendChild(tempDiv);
+
             const opt = {
-                margin:       [0.4, 0.4, 0.4, 0.4], 
+                margin:       0.5, 
                 filename:     'CV_Ahmad_Rijani.pdf',
-                image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { scale: 2, backgroundColor: '#ffffff', useCORS: true }, 
-                pagebreak:    { mode: 'avoid-all' },
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false }, 
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
             };
 
-            html2pdf().set(opt).from(cvTemplate).save().then(() => {
+            html2pdf().set(opt).from(tempDiv).save().then(() => {
                 btn.innerHTML = originalHTML;
                 btn.disabled = false;
+                document.body.removeChild(tempDiv); // Bersihin sistem setelah kelar
             }).catch(err => {
                 console.error("PDF Error: ", err);
                 btn.innerHTML = "<i class='fas fa-exclamation-triangle mr-2'></i> Gagal Download";
+                document.body.removeChild(tempDiv);
                 setTimeout(() => {
                     btn.innerHTML = originalHTML;
                     btn.disabled = false;
