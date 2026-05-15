@@ -608,33 +608,86 @@
             }
         };
 
-        // ---- DOWNLOAD PDF LOGIC ----
+        // ---- DOWNLOAD PDF LOGIC (UPDATED WITH PROFESSIONAL TEMPLATE) ----
         window.downloadCVPDF = () => {
-            const element = document.getElementById('cv-display');
+            if (!cvDataObj) return;
+
             const btn = document.getElementById('btn-download-cv');
             const originalHTML = btn.innerHTML;
             
             btn.innerHTML = "<i class='fas fa-spinner fa-spin mr-2'></i> Sedang Menyiapkan PDF...";
             btn.disabled = true;
 
-            const opt = {
-                margin:       0.3,
-                filename:     'CV_Ahmad_Rijani.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { 
-                    scale: 2, 
-                    backgroundColor: '#1e293b', // WAJIB DISET agar gak keputihan/blank
-                    useCORS: true,
-                    scrollY: 0 // WAJIB DISET agar gak kepotong kalau lagi scroll
-                }, 
-                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+            // Helper untuk list
+            const generatePDFList = (text) => {
+                if (!text) return '<p style="font-size: 14px; color: #4b5563;">-</p>';
+                const items = text.split('\n').map(e => e.trim()).filter(e => e);
+                return '<ul style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.6; color: #374151;">' + 
+                       items.map(e => '<li style="margin-bottom: 6px;">' + e + '</li>').join('') + 
+                       '</ul>';
             };
 
-            html2pdf().set(opt).from(element).save().then(() => {
+            // Helper untuk section
+            const createSection = (title, text) => {
+                if (!text) return '';
+                return `
+                    <div style="margin-bottom: 24px; page-break-inside: avoid;">
+                        <h2 style="font-size: 18px; font-weight: bold; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">${title}</h2>
+                        ${title === 'Profil Singkat' ? `<p style="font-size: 14px; line-height: 1.6; color: #374151; text-align: justify;">${text}</p>` : generatePDFList(text)}
+                    </div>
+                `;
+            };
+
+            // Buat container HTML khusus untuk diprint dengan styling putih & rapi
+            const pdfContainer = document.createElement('div');
+            pdfContainer.style.position = 'absolute';
+            pdfContainer.style.top = '-9999px';
+            pdfContainer.style.left = '-9999px';
+            pdfContainer.innerHTML = `
+                <div style="padding: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #ffffff; color: #1e293b; max-width: 800px; margin: 0 auto; box-sizing: border-box;">
+                    
+                    <h1 style="text-align: center; font-size: 32px; font-weight: 800; color: #0f172a; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 3px solid #0f172a; padding-bottom: 12px;">Curriculum Vitae</h1>
+                    
+                    <!-- BIODATA SECTION (Sesuai Request) -->
+                    <div style="margin-bottom: 24px; page-break-inside: avoid;">
+                        <h2 style="font-size: 18px; font-weight: bold; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Biodata</h2>
+                        <table style="width: 100%; font-size: 14px; line-height: 1.8; color: #374151;">
+                            <tr><td style="width: 180px; font-weight: 600;">Nama</td><td>: Ahmad Rijani</td></tr>
+                            <tr><td style="width: 180px; font-weight: 600;">Tempat, Tanggal Lahir</td><td>: Bungkukan, 26 Februari 2005</td></tr>
+                            <tr><td style="width: 180px; font-weight: 600;">Agama</td><td>: Islam</td></tr>
+                            <tr><td style="width: 180px; font-weight: 600;">Pekerjaan</td><td>: Mahasiswa/Pelajar</td></tr>
+                        </table>
+                    </div>
+
+                    <!-- DINAMIS DARI DATABASE -->
+                    ${createSection('Profil Singkat', cvDataObj.about)}
+                    ${createSection('Riwayat Pendidikan', cvDataObj.education)}
+                    ${createSection('Pengalaman Organisasi', cvDataObj.org)}
+                    ${createSection('Pengalaman Kerja', cvDataObj.work)}
+                    ${createSection('Prestasi', cvDataObj.achievements)}
+                    ${createSection('Sertifikat Profesional', cvDataObj.certs)}
+                    ${createSection('Karya', cvDataObj.works)}
+                    ${createSection('Sosmed & Email', cvDataObj.socials)}
+                </div>
+            `;
+            
+            document.body.appendChild(pdfContainer);
+
+            const opt = {
+                margin:       [0, 0, 0, 0], // Margin sudah ditangani oleh padding di div
+                filename:     'CV_Ahmad_Rijani.pdf',
+                image:        { type: 'jpeg', quality: 1 },
+                html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(pdfContainer).save().then(() => {
+                document.body.removeChild(pdfContainer);
                 btn.innerHTML = originalHTML;
                 btn.disabled = false;
             }).catch(err => {
                 console.error("PDF Error: ", err);
+                document.body.removeChild(pdfContainer);
                 btn.innerHTML = "<i class='fas fa-exclamation-triangle mr-2'></i> Gagal Download";
                 setTimeout(() => {
                     btn.innerHTML = originalHTML;
