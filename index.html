@@ -471,6 +471,17 @@
         let cvDataObj = null;
         let pendingAction = 'edit'; // 'edit' or 'download'
 
+        const defaultCV = {
+            about: "Saya mahasiswa UIN Antasari yang berminat pada manajemen, desain, dan pengembangan web. Saya orang yang analitis, cepat belajar, dan selalu siap menghadapi tantangan baru.",
+            education: "Universitas Islam Negeri Antasari (Sekarang)\nSMA Negeri di Banjarmasin",
+            org: "Anggota BEM Fakultas (2023)",
+            work: "Freelance Designer (2023 - 2024)",
+            achievements: "Juara Harapan 1 Lomba Essai (2023)",
+            certs: "Sertifikat Pelatihan Web Development",
+            works: "Website Portofolio Pribadi",
+            socials: "Email: ahmadrijani207@gmail.com\nLinkedIn: Ahmad Rijani\nWA: 082150658810"
+        };
+
         const setupRealtimeListener = () => {
             // Listener Portofolio
             const colRef = collection(db, ...collectionPath);
@@ -606,13 +617,19 @@
             btn.innerHTML = "<i class='fas fa-spinner fa-spin mr-2'></i> Sedang Menyiapkan PDF...";
             btn.disabled = true;
 
-            // Konfigurasi html2pdf
+            // Konfigurasi html2pdf yang lebih fix untuk background dark dan cut-off scroll
             const opt = {
-                margin:       0.3,
+                margin:       [0.5, 0.3, 0.5, 0.3], // ditambahin margin atas bawah dikit
                 filename:     'CV_Ahmad_Rijani.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, backgroundColor: '#1e293b' }, // Background agar tidak transparan/hitam legam
-                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+                html2canvas:  { 
+                    scale: 2, 
+                    backgroundColor: '#1e293b',
+                    useCORS: true, // fix nampilin font/icon
+                    scrollY: 0,    // fix issue kepotong karna scroll
+                    windowWidth: document.documentElement.offsetWidth
+                }, 
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' } // diganti ke a4
             };
 
             // Proses pembuatan PDF
