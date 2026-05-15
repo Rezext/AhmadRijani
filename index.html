@@ -7,6 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tambahan library untuk konversi HTML ke PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <script>
         tailwind.config = {
@@ -119,7 +121,7 @@
                     <div class="ml-10 flex items-baseline space-x-6 lg:space-x-8">
                         <button onclick="window.navigate('home')" class="hover:text-brand-accent transition-colors px-3 py-2 rounded-md text-sm font-medium">Dashboard</button>
                         <button onclick="window.navigate('portfolio')" class="hover:text-brand-accent transition-colors px-3 py-2 rounded-md text-sm font-medium">Karya & Prestasi</button>
-                        <button onclick="window.requestEditAccess()" class="hover:text-brand-accent transition-colors px-3 py-2 rounded-md text-sm font-medium">Manajemen Data</button>
+                        <button onclick="window.requestAction('edit')" class="hover:text-brand-accent transition-colors px-3 py-2 rounded-md text-sm font-medium">Manajemen Data</button>
                         <button onclick="window.navigate('contact')" class="bg-brand-primary hover:bg-indigo-500 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-lg hover:shadow-indigo-500/50">Contact Me</button>
                     </div>
                 </div>
@@ -136,7 +138,7 @@
             <div class="px-4 pt-2 pb-4 space-y-2">
                 <button onclick="window.navigate('home'); window.toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-3 rounded-md text-base font-medium transition-colors">Dashboard</button>
                 <button onclick="window.navigate('portfolio'); window.toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-3 rounded-md text-base font-medium transition-colors">Karya & Prestasi</button>
-                <button onclick="window.requestEditAccess(); window.toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-3 rounded-md text-base font-medium transition-colors">Manajemen Data</button>
+                <button onclick="window.requestAction('edit'); window.toggleMobileMenu();" class="text-left w-full hover:bg-gray-700 block px-3 py-3 rounded-md text-base font-medium transition-colors">Manajemen Data</button>
                 <button onclick="window.navigate('contact'); window.toggleMobileMenu();" class="text-center w-full bg-brand-primary text-white block px-3 py-3 rounded-md text-base font-medium mt-4 shadow-lg">Contact Me</button>
             </div>
         </div>
@@ -146,7 +148,7 @@
         <div class="bg-brand-card p-6 sm:p-8 rounded-2xl border border-gray-700 w-full max-w-sm shadow-2xl relative">
             <button onclick="window.closePasswordModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white p-2"><i class="fas fa-times"></i></button>
             <h3 class="text-xl font-bold mb-4 text-center">Akses Terkunci</h3>
-            <p class="text-sm text-gray-400 mb-6 text-center">Masukkan password untuk masuk ke Manajemen Data.</p>
+            <p class="text-sm text-gray-400 mb-6 text-center">Masukkan password untuk melanjutkan.</p>
             <input type="password" id="auth-password" class="w-full bg-brand-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent mb-2" placeholder="Password...">
             <p id="auth-error" class="text-red-400 text-xs hidden mb-4 text-center">Password salah!</p>
             <button onclick="window.verifyPassword()" class="w-full bg-brand-primary hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-lg transition-colors mt-2">Masuk</button>
@@ -221,6 +223,13 @@
                         <i class="fas fa-spinner fa-spin text-2xl mb-3"></i>
                         <p>Memuat Curriculum Vitae...</p>
                     </div>
+                </div>
+
+                <!-- Tombol Download CV dengan Password -->
+                <div class="text-center mt-6">
+                    <button id="btn-download-cv" onclick="window.requestAction('download')" class="bg-gradient-to-r from-brand-accent to-brand-primary hover:opacity-90 text-white px-8 py-3 rounded-full font-semibold transition-all shadow-lg shadow-brand-primary/30">
+                        <i class="fas fa-file-pdf mr-2"></i> Download CV (PDF)
+                    </button>
                 </div>
             </div>
         </section>
@@ -460,17 +469,7 @@
         let currentFilter = 'Semua';
         let portfolios = [];
         let cvDataObj = null;
-
-        const defaultCV = {
-            about: "Saya mahasiswa UIN Antasari yang berminat pada manajemen, desain, dan pengembangan web. Saya orang yang analitis, cepat belajar, dan selalu siap menghadapi tantangan baru.",
-            education: "Universitas Islam Negeri Antasari (Sekarang)\nSMA Negeri di Banjarmasin",
-            org: "Anggota BEM Fakultas (2023)",
-            work: "Freelance Designer (2023 - 2024)",
-            achievements: "Juara Harapan 1 Lomba Essai (2023)",
-            certs: "Sertifikat Pelatihan Web Development",
-            works: "Website Portofolio Pribadi",
-            socials: "Email: ahmadrijani207@gmail.com\nLinkedIn: Ahmad Rijani\nWA: 082150658810"
-        };
+        let pendingAction = 'edit'; // 'edit' or 'download'
 
         const setupRealtimeListener = () => {
             // Listener Portofolio
@@ -484,7 +483,7 @@
                 
                 isDbReady = true;
                 window.renderPortfolio();
-                if(isAuthenticated) window.renderManageList();
+                if(isAuthenticated && document.getElementById('edit').classList.contains('active')) window.renderManageList();
             }, (error) => console.error(error));
 
             // Listener CV
@@ -532,7 +531,6 @@
             }
         };
 
-        // TAB SWITCHER DI MANAJEMEN DATA
         window.switchEditTab = (tab) => {
             const secPorto = document.getElementById('edit-portfolio-section');
             const secCV = document.getElementById('edit-cv-section');
@@ -552,13 +550,22 @@
             }
         };
 
-        // ---- AUTHENTICATION ----
+        // ---- AUTHENTICATION & ACTION DISPATCHER ----
 
-        window.requestEditAccess = () => {
+        window.requestAction = (actionType) => {
+            pendingAction = actionType;
             if (isAuthenticated) {
-                window.navigate('edit');
+                executePendingAction();
             } else {
                 document.getElementById('password-modal').classList.remove('hidden');
+            }
+        };
+
+        const executePendingAction = () => {
+            if (pendingAction === 'edit') {
+                window.navigate('edit');
+            } else if (pendingAction === 'download') {
+                window.downloadCVPDF();
             }
         };
 
@@ -580,7 +587,7 @@
                 await signInWithEmailAndPassword(auth, "ahmadrijani207@gmail.com", pw);
                 isAuthenticated = true;
                 window.closePasswordModal();
-                window.navigate('edit');
+                executePendingAction();
             } catch (error) {
                 err.innerText = "Akses Ditolak! Password salah.";
                 err.classList.remove('hidden');
@@ -588,6 +595,38 @@
                 btn.innerHTML = "Masuk";
                 btn.disabled = false;
             }
+        };
+
+        // ---- DOWNLOAD PDF LOGIC ----
+        window.downloadCVPDF = () => {
+            const element = document.getElementById('cv-display');
+            const btn = document.getElementById('btn-download-cv');
+            const originalHTML = btn.innerHTML;
+            
+            btn.innerHTML = "<i class='fas fa-spinner fa-spin mr-2'></i> Sedang Menyiapkan PDF...";
+            btn.disabled = true;
+
+            // Konfigurasi html2pdf
+            const opt = {
+                margin:       0.3,
+                filename:     'CV_Ahmad_Rijani.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, backgroundColor: '#1e293b' }, // Background agar tidak transparan/hitam legam
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            // Proses pembuatan PDF
+            html2pdf().set(opt).from(element).save().then(() => {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }).catch(err => {
+                console.error("PDF Error: ", err);
+                btn.innerHTML = "<i class='fas fa-exclamation-triangle mr-2'></i> Gagal Download";
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.disabled = false;
+                }, 3000);
+            });
         };
 
         // ---- RENDER CV (DASHBOARD) ----
